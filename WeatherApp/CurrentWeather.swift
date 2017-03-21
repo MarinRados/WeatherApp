@@ -19,6 +19,57 @@ struct CurrentWeather {
     let icon: String
 }
 
+struct Coordinate {
+    let latitude: Double
+    let longitude: Double
+}
+
+extension Coordinate: CustomStringConvertible {
+    
+    var description: String {
+        return "lat=\(latitude)&lon=\(longitude)"
+    }
+}
+
+extension CurrentWeather {
+    
+    struct Key {
+        static let main = "main"
+        static let wind = "wind"
+        static let clouds = "clouds"
+        static let weather = "weather"
+        static let temperature = "temp"
+        static let pressure = "pressure"
+        static let humidity = "humidity"
+        static let speed = "speed"
+        static let cloudiness = "all"
+        static let summary = "description"
+        static let icon = "description"
+    }
+    
+    init?(json: [String: Any]) {
+        guard let main = json[Key.main] as? [String: Any],
+            let tempValue = main[Key.temperature] as? Double,
+            let pressureValue = main[Key.pressure] as? Double,
+            let humidityValue = main[Key.humidity] as? Double,
+            let wind = json [Key.wind] as? [String: Any],
+            let speedValue = wind[Key.speed] as? Double,
+            let clouds = json [Key.clouds] as? [String: Any],
+            let cloudsValue = clouds[Key.cloudiness] as? Double,
+            let weather = json[Key.weather] as? [[String: Any]],
+            let summaryString = weather[0][Key.summary] as? String,
+            let iconString = weather[0][Key.icon] as? String else { return nil }
+        
+        self.temperature = tempValue
+        self.pressure = pressureValue
+        self.humidity = humidityValue
+        self.windSpeed = speedValue
+        self.cloudiness = cloudsValue
+        self.summary = summaryString
+        self.icon = iconString
+    }
+}
+
 
 
 

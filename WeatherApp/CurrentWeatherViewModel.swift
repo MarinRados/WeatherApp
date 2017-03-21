@@ -20,13 +20,15 @@ struct CurrentWeatherViewModel {
     
     init(model: CurrentWeather) {
         
-        self.temperature = "\(model.temperature)"
+        self.temperature = "\(Int(model.temperature))"
         self.pressure = "\(model.pressure)"
-        self.humidity = "\(Int(model.humidity * 100))"
+        self.humidity = "\(Int(model.humidity))"
         self.windSpeed = "\(model.windSpeed)"
-        self.cloudiness = "\(Int(model.cloudiness * 100))"
-        self.summary = model.summary
-        self.icon = #imageLiteral(resourceName: "clear-day")
+        self.cloudiness = "\(Int(model.cloudiness))"
+        self.summary = model.summary.capitalized
+        
+        let weatherIcon = WeatherIcon(iconString: model.icon)
+        self.icon = weatherIcon.image
     }
 }
 

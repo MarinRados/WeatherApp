@@ -9,19 +9,23 @@
 import UIKit
 
 class WeatherViewController: UITableViewController {
-
-    fileprivate let apiKey = "e6db5dcb86641d91ffd8b6ac2c1df2ed"
-    let cityId = "3193935"
+    
+    let client = APIClient()
+    var viewModel: CurrentWeatherViewModel? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let forecastURL = URL(string: "api.openweathermap.org/data/2.5/forecast/city?id=\(cityId)&APPID=\(apiKey)")
+        let coordinate = Coordinate(latitude: 45.557968, longitude: 18.677825)
         
-        let configuration = URLSessionConfiguration.default
-        let session = URLSession(configuration: configuration)
-        
-        
+        client.getCurrentWeather(at: coordinate) { currentWeather, error in
+            if let currentWeather = currentWeather {
+                self.viewModel = CurrentWeatherViewModel(model: currentWeather)
+                self.tableView.reloadData()
+            }
+            
+            print("\(currentWeather)")
+        }
     }
 
 
@@ -43,6 +47,7 @@ class WeatherViewController: UITableViewController {
         cell.weatherImage.image = #imageLiteral(resourceName: "partly-cloudy-day")
         cell.highTemperatureLabel.text = "22°"
         cell.lowTemperatureLabel.text = "10°"
+        cell.isUserInteractionEnabled = false
         
         return cell
     }
@@ -50,10 +55,10 @@ class WeatherViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerCell = tableView.dequeueReusableCell(withIdentifier: "CurrentWeather") as! CurrentWeatherCell
         
-        headerCell.temperatureLabel.text = "20"
+        headerCell.temperatureLabel.text = self.viewModel?.temperature ?? ""
         headerCell.locationLabel.text = "Osijek, Croatia"
-        headerCell.weatherImage.image = #imageLiteral(resourceName: "clear-day")
-        headerCell.summaryLabel.text = "Sunny"
+        headerCell.weatherImage.image = self.viewModel?.icon ?? #imageLiteral(resourceName: "default")
+        headerCell.summaryLabel.text = self.viewModel?.summary ?? ""
         
         return headerCell
     }
@@ -61,10 +66,10 @@ class WeatherViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerCell = tableView.dequeueReusableCell(withIdentifier: "AdditionalInfo") as! AdditionalInfoCell
         
-        footerCell.pressureLabel.text = "Pressure: 23 bar"
-        footerCell.humidityLabel.text = "Humidity: 34%"
-        footerCell.windSpeedLabel.text = "Wind speed: 5 km/h"
-        footerCell.cloudinessLabel.text = "Cloudiness: 26%"
+        footerCell.pressureLabel.text = "Pressure: \(self.viewModel?.pressure ?? "") hPa"
+        footerCell.humidityLabel.text = "Humidity: \(self.viewModel?.humidity ?? "") %"
+        footerCell.windSpeedLabel.text = "Wind speed: \(self.viewModel?.windSpeed ?? "") km/h"
+        footerCell.cloudinessLabel.text = "Cloudiness: \(self.viewModel?.cloudiness ?? "") %"
         
         return footerCell
     }
