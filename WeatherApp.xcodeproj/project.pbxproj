@@ -21,6 +21,7 @@
 		EA802DCD1E801C3E006D7805 /* ForecastError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DCC1E801C3E006D7805 /* ForecastError.swift */; };
 		EA802DCF1E8117D7006D7805 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DCE1E8117D7006D7805 /* APIClient.swift */; };
 		EA802DD31E816477006D7805 /* WeatherIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DD21E816477006D7805 /* WeatherIcon.swift */; };
+		EA802DD51E82B06B006D7805 /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DD41E82B06B006D7805 /* WeatherViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		EA802DCC1E801C3E006D7805 /* ForecastError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForecastError.swift; sourceTree = "<group>"; };
 		EA802DCE1E8117D7006D7805 /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		EA802DD21E816477006D7805 /* WeatherIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherIcon.swift; sourceTree = "<group>"; };
+		EA802DD41E82B06B006D7805 /* WeatherViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 				EA802DAC1E7FCAB5006D7805 /* AppDelegate.swift */,
 				EA802DB01E7FCAB5006D7805 /* Main.storyboard */,
 				EA802DBE1E7FD31F006D7805 /* WeatherViewController.swift */,
+				EA802DD41E82B06B006D7805 /* WeatherViewModel.swift */,
 				EA802DCA1E8019A7006D7805 /* JSONDownloader.swift */,
 				EA802DCE1E8117D7006D7805 /* APIClient.swift */,
 				EA802DCC1E801C3E006D7805 /* ForecastError.swift */,
@@ -165,6 +168,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA802DCB1E8019A7006D7805 /* JSONDownloader.swift in Sources */,
+				EA802DD51E82B06B006D7805 /* WeatherViewModel.swift in Sources */,
 				EA802DAD1E7FCAB5006D7805 /* AppDelegate.swift in Sources */,
 				EA802DC51E7FFD21006D7805 /* AdditionalInfoCell.swift in Sources */,
 				EA802DCF1E8117D7006D7805 /* APIClient.swift in Sources */,

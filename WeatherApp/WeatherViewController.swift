@@ -10,24 +10,27 @@ import UIKit
 
 class WeatherViewController: UITableViewController {
     
-    let client = APIClient()
-    var viewModel: CurrentWeatherViewModel? = nil
+
+    var viewModel: WeatherViewModel!
+    var data: CurrentWeatherPresentable? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setViewModel()
         let coordinate = Coordinate(latitude: 45.557968, longitude: 18.677825)
-        
-        client.getCurrentWeather(at: coordinate) { currentWeather, error in
-            if let currentWeather = currentWeather {
-                self.viewModel = CurrentWeatherViewModel(model: currentWeather)
-                self.tableView.reloadData()
-            }
-            
-            print("\(currentWeather)")
-        }
-    }
+        viewModel.getWeather(coordinates: coordinate)
 
+        viewModel.onSuccess = { data in
+            self.data = data
+            self.tableView.reloadData()
+        }
+
+    }
+    
+    private func setViewModel(){
+        viewModel = WeatherViewModel()
+    }
+    
 
     // MARK: - Table view data source
 
@@ -53,24 +56,27 @@ class WeatherViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
         let headerCell = tableView.dequeueReusableCell(withIdentifier: "CurrentWeather") as! CurrentWeatherCell
-        
-        headerCell.temperatureLabel.text = self.viewModel?.temperature ?? ""
+        headerCell.temperatureLabel.text = data?.temperature
         headerCell.locationLabel.text = "Osijek, Croatia"
-        headerCell.weatherImage.image = self.viewModel?.icon ?? #imageLiteral(resourceName: "default")
-        headerCell.summaryLabel.text = self.viewModel?.summary ?? ""
-        
+        headerCell.weatherImage.image = data?.icon
+        headerCell.summaryLabel.text = data?.summary
         return headerCell
     }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        
         let footerCell = tableView.dequeueReusableCell(withIdentifier: "AdditionalInfo") as! AdditionalInfoCell
         
-        footerCell.pressureLabel.text = "Pressure: \(self.viewModel?.pressure ?? "") hPa"
-        footerCell.humidityLabel.text = "Humidity: \(self.viewModel?.humidity ?? "") %"
-        footerCell.windSpeedLabel.text = "Wind speed: \(self.viewModel?.windSpeed ?? "") km/h"
-        footerCell.cloudinessLabel.text = "Cloudiness: \(self.viewModel?.cloudiness ?? "") %"
+        guard let data = data else {
+            return nil
+        }
         
+        footerCell.pressureLabel.text = "Pressure: \(data.pressure) hPa"
+        footerCell.humidityLabel.text = "Humidity: \(data.humidity) %"
+        footerCell.windSpeedLabel.text = "Wind speed: \(data.windSpeed) km/h"
+        footerCell.cloudinessLabel.text = "Cloudiness: \(data.cloudiness) %"
         return footerCell
     }
     

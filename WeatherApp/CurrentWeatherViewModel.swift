@@ -8,8 +8,7 @@
 
 import Foundation
 import UIKit
-
-struct CurrentWeatherViewModel {
+struct CurrentWeatherPresentable {
     let temperature: String
     let pressure: String
     let humidity: String
