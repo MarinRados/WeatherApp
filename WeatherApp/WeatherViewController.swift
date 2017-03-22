@@ -13,18 +13,25 @@ class WeatherViewController: UITableViewController {
 
     var viewModel: WeatherViewModel!
     var data: CurrentWeatherPresentable? = nil
+    let coordinate = Coordinate(latitude: 45.557968, longitude: 18.677825)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setViewModel()
-        let coordinate = Coordinate(latitude: 45.557968, longitude: 18.677825)
         viewModel.getWeather(coordinates: coordinate)
 
-        viewModel.onSuccess = { data in
-            self.data = data
-            self.tableView.reloadData()
+        viewModel.onSuccess = { [weak self] data in
+            self?.data = data
+            self?.tableView.reloadData()
+            self?.refreshControl?.endRefreshing()
         }
+        
+        self.refreshControl?.addTarget(self, action: #selector(WeatherViewController.refreshWeather(refreshControl:)), for: UIControlEvents.valueChanged)
 
+    }
+    
+    func refreshWeather(refreshControl: UIRefreshControl) {
+        viewModel.getWeather(coordinates: coordinate)
     }
     
     private func setViewModel(){
