@@ -41,19 +41,36 @@ class APIClient {
         
         task.resume()
     }
+    
+    func getSevenDayForecast(at coordinate: Coordinate, completionHandler completion: @escaping (SevenDayForecast?, ForecastError?) -> Void) {
+        
+        guard let url = URL(string: "http://api.openweathermap.org/data/2.5/forecast/daily?\(coordinate.description)&cnt=7&units=\(units)&APPID=\(self.apiKey)") else {
+            completion(nil, .invalidURL)
+            return
+        }
+        
+        let request = URLRequest(url: url)
+        
+        let task = downloader.jsonTask(with: request) { json, error in
+            
+            guard let json = json else {
+                completion(nil, error)
+                return
+            }
+            
+            print(json)
+            print(json.count)
+            
+            guard let sevenDayForecast = SevenDayForecast(json: json) else {
+                completion(nil, .jsonParsingFailure)
+                return
+            }
+            
+            completion(sevenDayForecast, nil)
+        }
+        
+        task.resume()
+    }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

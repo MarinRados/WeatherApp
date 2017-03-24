@@ -12,17 +12,38 @@ class WeatherViewController: UITableViewController {
     
 
     var viewModel: WeatherViewModel!
-    var data: CurrentWeatherPresentable? = nil
+    var currentData: CurrentWeatherPresentable? = nil
+    var forecastData: SevenDayForecastPresentable? = nil
     let coordinate = Coordinate(latitude: 45.557968, longitude: 18.677825)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setViewModel()
         viewModel.getWeather(coordinates: coordinate)
+        viewModel.getForecast(coordinates: coordinate)
 
         viewModel.onSuccess = { [weak self] data in
-            self?.data = data
+            self?.currentData = data
             self?.tableView.reloadData()
+            self?.refreshControl?.endRefreshing()
+        }
+        
+        viewModel.onForecastSuccess = { [weak self] data in
+            self?.forecastData = data
+            print("\(self?.forecastData)")
+            self?.tableView.reloadData()
+            self?.refreshControl?.endRefreshing()
+        }
+        
+        viewModel.onError = { [weak self] error in
+            switch error {
+            case .invalidData: self?.showAlertWith(message: "Invalid data.")
+            case .invalidURL: self?.showAlertWith(message: "Invalid URL.")
+            case .requestFailed: self?.showAlertWith(message: "Request to fetch data failed.")
+            case .responseUnsuccessful: self?.showAlertWith(message: "Response unsuccessful.")
+            case .jsonConversionFailure: self?.showAlertWith(message: "JSON conversion failed.")
+            case .jsonParsingFailure: self?.showAlertWith(message: "JSON parsing failed.")
+            }
             self?.refreshControl?.endRefreshing()
         }
         
@@ -32,10 +53,18 @@ class WeatherViewController: UITableViewController {
     
     func refreshWeather(refreshControl: UIRefreshControl) {
         viewModel.getWeather(coordinates: coordinate)
+        viewModel.getForecast(coordinates: coordinate)
     }
     
     private func setViewModel(){
         viewModel = WeatherViewModel()
+    }
+    
+    func showAlertWith(message: String) {
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(action)
+        present(alertController, animated: true, completion: nil)
     }
     
 
@@ -65,10 +94,10 @@ class WeatherViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerCell = tableView.dequeueReusableCell(withIdentifier: "CurrentWeather") as! CurrentWeatherCell
-        headerCell.temperatureLabel.text = data?.temperature
+        headerCell.temperatureLabel.text = currentData?.temperature
         headerCell.locationLabel.text = "Osijek, Croatia"
-        headerCell.weatherImage.image = data?.icon
-        headerCell.summaryLabel.text = data?.summary
+        headerCell.weatherImage.image = currentData?.icon
+        headerCell.summaryLabel.text = currentData?.summary
         return headerCell
     }
     
@@ -76,14 +105,14 @@ class WeatherViewController: UITableViewController {
         
         let footerCell = tableView.dequeueReusableCell(withIdentifier: "AdditionalInfo") as! AdditionalInfoCell
         
-        guard let data = data else {
+        guard let currentData = currentData else {
             return nil
         }
         
-        footerCell.pressureLabel.text = "Pressure: \(data.pressure) hPa"
-        footerCell.humidityLabel.text = "Humidity: \(data.humidity) %"
-        footerCell.windSpeedLabel.text = "Wind speed: \(data.windSpeed) km/h"
-        footerCell.cloudinessLabel.text = "Cloudiness: \(data.cloudiness) %"
+        footerCell.pressureLabel.text = "Pressure: \(currentData.pressure) hPa"
+        footerCell.humidityLabel.text = "Humidity: \(currentData.humidity) %"
+        footerCell.windSpeedLabel.text = "Wind speed: \(currentData.windSpeed) km/h"
+        footerCell.cloudinessLabel.text = "Cloudiness: \(currentData.cloudiness) %"
         return footerCell
     }
     
@@ -92,7 +121,7 @@ class WeatherViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 220
+        return 300
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

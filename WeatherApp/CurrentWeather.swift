@@ -19,18 +19,6 @@ struct CurrentWeather {
     let icon: String
 }
 
-struct Coordinate {
-    let latitude: Double
-    let longitude: Double
-}
-
-extension Coordinate: CustomStringConvertible {
-    
-    var description: String {
-        return "lat=\(latitude)&lon=\(longitude)"
-    }
-}
-
 extension CurrentWeather {
     
     struct Key {
