@@ -125,7 +125,7 @@ class WeatherViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 200
+        return 140
     }
 
     /*
