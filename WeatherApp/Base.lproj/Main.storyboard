@@ -94,14 +94,8 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Low" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idr-Se-RX1">
-                                            <rect key="frame" x="316" y="25" width="31" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="High" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8gO-W0-PLL">
-                                            <rect key="frame" x="270" y="25" width="36" height="21"/>
+                                            <rect key="frame" x="260" y="25" width="36" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -113,18 +107,24 @@
                                                 <constraint firstAttribute="width" constant="50" id="J86-fx-xUw"/>
                                             </constraints>
                                         </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Low" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idr-Se-RX1">
+                                            <rect key="frame" x="316" y="25" width="31" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="idr-Se-RX1" firstAttribute="centerY" secondItem="9np-yk-2z8" secondAttribute="centerY" id="2LY-qW-Bjh"/>
                                         <constraint firstItem="Nig-x7-Uwj" firstAttribute="centerY" secondItem="9np-yk-2z8" secondAttribute="centerY" id="6Nr-1a-l2b"/>
-                                        <constraint firstItem="idr-Se-RX1" firstAttribute="leading" secondItem="8gO-W0-PLL" secondAttribute="trailing" constant="10" id="MmD-gE-GkS"/>
+                                        <constraint firstItem="idr-Se-RX1" firstAttribute="leading" secondItem="8gO-W0-PLL" secondAttribute="trailing" constant="20" id="EyD-HG-Neh"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="idr-Se-RX1" secondAttribute="trailing" constant="20" id="Qqi-Vc-Nfc"/>
                                         <constraint firstItem="WjT-lN-J2m" firstAttribute="centerX" secondItem="9np-yk-2z8" secondAttribute="centerX" id="R4w-zg-W49"/>
                                         <constraint firstItem="WjT-lN-J2m" firstAttribute="centerY" secondItem="9np-yk-2z8" secondAttribute="centerY" id="aoD-Rl-Xkt"/>
                                         <constraint firstItem="8gO-W0-PLL" firstAttribute="centerY" secondItem="9np-yk-2z8" secondAttribute="centerY" id="eKq-yL-d3K"/>
                                         <constraint firstAttribute="leadingMargin" secondItem="Nig-x7-Uwj" secondAttribute="leading" id="jEg-Nw-zZV"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="idr-Se-RX1" secondAttribute="trailing" constant="20" id="nPM-1i-w57"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>

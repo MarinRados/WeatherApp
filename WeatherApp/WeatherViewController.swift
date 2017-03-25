@@ -13,7 +13,7 @@ class WeatherViewController: UITableViewController {
 
     var viewModel: WeatherViewModel!
     var currentData: CurrentWeatherPresentable? = nil
-    var forecastData: SevenDayForecastPresentable? = nil
+    var forecastData: [SevenDayForecastPresentable]? = nil
     let coordinate = Coordinate(latitude: 45.557968, longitude: 18.677825)
     
     override func viewDidLoad() {
@@ -30,7 +30,7 @@ class WeatherViewController: UITableViewController {
         
         viewModel.onForecastSuccess = { [weak self] data in
             self?.forecastData = data
-            print("\(self?.forecastData)")
+            print("PRESENTABLE DATA \(self?.forecastData)")
             self?.tableView.reloadData()
             self?.refreshControl?.endRefreshing()
         }
@@ -81,11 +81,13 @@ class WeatherViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SevenDays", for: indexPath) as! SevenDayForecastCell
+        
+        let index = indexPath.row + 1
 
-        cell.dayLabel.text = "Monday"
-        cell.weatherImage.image = #imageLiteral(resourceName: "partly-cloudy-day")
-        cell.highTemperatureLabel.text = "22°"
-        cell.lowTemperatureLabel.text = "10°"
+        cell.dayLabel.text = forecastData?[index].day
+        cell.weatherImage.image = forecastData?[index].icon
+        cell.highTemperatureLabel.text = forecastData?[index].maxTemperature
+        cell.lowTemperatureLabel.text = forecastData?[index].minTemperature
         cell.isUserInteractionEnabled = false
         
         return cell

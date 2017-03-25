@@ -23,15 +23,15 @@ enum WeatherIcon {
     
     init(iconString: String) {
         switch iconString {
-        case "clear sky": self = .clearSky
-        case "few clouds": self = .fewClouds
-        case "scattered clouds": self = .scatteredClouds
-        case "broken clouds": self = .brokenClouds
-        case "shower rain": self = .showerRain
-        case "rain": self = .rain
-        case "thunderstorm": self = .thunderstrom
-        case "snow": self = .snow
-        case "mist": self = .mist
+        case "01n", "01d": self = .clearSky
+        case "02n", "02d": self = .fewClouds
+        case "03n", "03d": self = .scatteredClouds
+        case "04n", "04d": self = .brokenClouds
+        case "09n", "09d": self = .showerRain
+        case "10n", "10d": self = .rain
+        case "11n", "11d": self = .thunderstrom
+        case "13n", "13d": self = .snow
+        case "50n", "50d": self = .mist
         default: self = .default
         }
     }

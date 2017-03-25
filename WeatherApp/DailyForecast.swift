@@ -1,22 +1,21 @@
 //
-//  SevenDayForecast.swift
+//  DailyForecast.swift
 //  WeatherApp
 //
-//  Created by Marin Rados on 23/03/2017.
+//  Created by Marin Rados on 24/03/2017.
 //  Copyright © 2017 Marin Rados. All rights reserved.
 //
 
 import Foundation
 
-
-struct SevenDayForecast {
+struct DailyForecast {
     let maxTemperature: Double
     let minTemperature: Double
     let day: Date
     let icon: String
 }
 
-extension SevenDayForecast {
+extension DailyForecast {
     
     struct Key {
         static let list = "list"
@@ -25,17 +24,17 @@ extension SevenDayForecast {
         static let min = "min"
         static let max = "max"
         static let date = "dt"
-        static let icon = "description"
+        static let icon = "icon"
     }
     
-    init?(json: [String: Any]) {
+    init?(json: [String: Any], index: Int) {
         guard let list = json[Key.list] as? [[String: Any]],
-            let temp = list[0][Key.temp] as? [String: Any],
+            let temp = list[index][Key.temp] as? [String: Any],
             let maxValue = temp[Key.max] as? Double,
             let minValue = temp[Key.min] as? Double,
-            let weather = list[0][Key.weather] as? [[String: Any]],
+            let weather = list[index][Key.weather] as? [[String: Any]],
             let iconString = weather[0][Key.icon] as? String,
-            let unixTime = list[0][Key.date] as? Double else { return nil }
+            let unixTime = list[index][Key.date] as? Double else { return nil }
         
         self.maxTemperature = maxValue
         self.minTemperature = minValue
@@ -43,8 +42,3 @@ extension SevenDayForecast {
         self.day = Date(timeIntervalSince1970: unixTime)
     }
 }
-
-
-
-
-

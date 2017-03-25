@@ -32,7 +32,7 @@ extension CurrentWeather {
         static let speed = "speed"
         static let cloudiness = "all"
         static let summary = "description"
-        static let icon = "description"
+        static let icon = "icon"
     }
     
     init?(json: [String: Any]) {

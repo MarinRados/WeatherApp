@@ -42,9 +42,9 @@ class APIClient {
         task.resume()
     }
     
-    func getSevenDayForecast(at coordinate: Coordinate, completionHandler completion: @escaping (SevenDayForecast?, ForecastError?) -> Void) {
+    func getSevenDayForecast(at coordinate: Coordinate, completionHandler completion: @escaping ([DailyForecast]?, ForecastError?) -> Void) {
         
-        guard let url = URL(string: "http://api.openweathermap.org/data/2.5/forecast/daily?\(coordinate.description)&cnt=7&units=\(units)&APPID=\(self.apiKey)") else {
+        guard let url = URL(string: "http://api.openweathermap.org/data/2.5/forecast/daily?\(coordinate.description)&cnt=8&units=\(units)&APPID=\(self.apiKey)") else {
             completion(nil, .invalidURL)
             return
         }
@@ -58,14 +58,19 @@ class APIClient {
                 return
             }
             
-            print(json)
-            print(json.count)
+            var sevenDayForecast = [DailyForecast]()
             
-            guard let sevenDayForecast = SevenDayForecast(json: json) else {
-                completion(nil, .jsonParsingFailure)
-                return
+            print(json)
+            
+            for index in 0...7 {
+                guard let dailyForecast = DailyForecast(json: json, index: index) else {
+                    completion(nil, .jsonParsingFailure)
+                    return
+                }
+                sevenDayForecast.append(dailyForecast)
             }
             
+            print("\(sevenDayForecast)")
             completion(sevenDayForecast, nil)
         }
         

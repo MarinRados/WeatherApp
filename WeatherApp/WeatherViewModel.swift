@@ -13,7 +13,7 @@ class WeatherViewModel {
   
     let client =  APIClient()
     var onSuccess: ((CurrentWeatherPresentable)->Void)?
-    var onForecastSuccess: ((SevenDayForecastPresentable)->Void)?
+    var onForecastSuccess: (([SevenDayForecastPresentable])->Void)?
     var onError: ((ForecastError)->Void)?
     
     
@@ -30,10 +30,14 @@ class WeatherViewModel {
     }
     
     func getForecast(coordinates: Coordinate) {
-        client.getSevenDayForecast(at: coordinates) { [weak self] (sevenDayForecast, error) in
-            if let sevenDayForecast = sevenDayForecast {
-                let presentableData = SevenDayForecastPresentable(model: sevenDayForecast)
-                self?.onForecastSuccess?(presentableData)
+        client.getSevenDayForecast(at: coordinates) { [weak self] (dailyForecast, error) in
+            var sevenDayForecastData = [SevenDayForecastPresentable]()
+            if let dailyForecast = dailyForecast {
+                for index in 0...7 {
+                    let presentableData = SevenDayForecastPresentable(model: dailyForecast[index], index: index)
+                    sevenDayForecastData.append(presentableData)
+                }
+                self?.onForecastSuccess?(sevenDayForecastData)
             } else {
                 self?.onError?(error!)
             }
@@ -70,11 +74,11 @@ struct SevenDayForecastPresentable {
     let day: String
     let icon: UIImage
     
-    init(model: SevenDayForecast) {
-        
+    init(model: DailyForecast, index: Int) {
         self.maxTemperature = "\(Int(model.maxTemperature))"
         self.minTemperature = "\(Int(model.minTemperature))"
-        self.day = "\(model.day.dayOfWeek())"
+        let dayOfTheWeek = model.day.dayOfTheWeek() ?? ""
+        self.day = "\(dayOfTheWeek)"
         
         let weatherIcon = WeatherIcon(iconString: model.icon)
         self.icon = weatherIcon.image
