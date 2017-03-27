@@ -24,6 +24,8 @@
 		EA802DD71E83C8A8006D7805 /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DD61E83C8A8006D7805 /* Coordinate.swift */; };
 		EA802DE01E8549F9006D7805 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DDF1E8549F9006D7805 /* Date+Extensions.swift */; };
 		EA802DE21E857A87006D7805 /* DailyForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DE11E857A87006D7805 /* DailyForecast.swift */; };
+		EA802DE41E891907006D7805 /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DE31E891907006D7805 /* LocationViewController.swift */; };
+		EA802DE61E891922006D7805 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DE51E891922006D7805 /* MapViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +48,8 @@
 		EA802DD61E83C8A8006D7805 /* Coordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
 		EA802DDF1E8549F9006D7805 /* Date+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		EA802DE11E857A87006D7805 /* DailyForecast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyForecast.swift; sourceTree = "<group>"; };
+		EA802DE31E891907006D7805 /* LocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
+		EA802DE51E891922006D7805 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +84,8 @@
 			children = (
 				EA802DAC1E7FCAB5006D7805 /* AppDelegate.swift */,
 				EA802DB01E7FCAB5006D7805 /* Main.storyboard */,
+				EA802DE31E891907006D7805 /* LocationViewController.swift */,
+				EA802DE51E891922006D7805 /* MapViewController.swift */,
 				EA802DBE1E7FD31F006D7805 /* WeatherViewController.swift */,
 				EA802DD41E82B06B006D7805 /* WeatherViewModel.swift */,
 				EA802DCA1E8019A7006D7805 /* JSONDownloader.swift */,
@@ -197,6 +203,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA802DE41E891907006D7805 /* LocationViewController.swift in Sources */,
 				EA802DCB1E8019A7006D7805 /* JSONDownloader.swift in Sources */,
 				EA802DD51E82B06B006D7805 /* WeatherViewModel.swift in Sources */,
 				EA802DAD1E7FCAB5006D7805 /* AppDelegate.swift in Sources */,
@@ -211,6 +218,7 @@
 				EA802DC31E7FFD10006D7805 /* SevenDayForecastCell.swift in Sources */,
 				EA802DD71E83C8A8006D7805 /* Coordinate.swift in Sources */,
 				EA802DE21E857A87006D7805 /* DailyForecast.swift in Sources */,
+				EA802DE61E891922006D7805 /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

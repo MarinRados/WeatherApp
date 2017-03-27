@@ -57,6 +57,17 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="2Qc-5H-8Gv">
+                                            <rect key="frame" x="8" y="48" width="55" height="48"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <state key="normal">
+                                                <string key="title">Change
+location</string>
+                                            </state>
+                                            <connections>
+                                                <segue destination="rG5-4O-bhF" kind="presentation" identifier="Location" id="8Fw-Hg-f5z"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -64,8 +75,10 @@
                                         <constraint firstItem="XGz-aC-ala" firstAttribute="top" secondItem="V98-wq-j87" secondAttribute="bottom" constant="10" id="3gP-pb-CcJ"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="XGz-aC-ala" secondAttribute="bottom" constant="20" id="72F-iU-elS"/>
                                         <constraint firstItem="TV0-Ad-CeD" firstAttribute="top" secondItem="se1-Mk-cLG" secondAttribute="bottom" constant="10" id="PNb-Ea-0Mj"/>
+                                        <constraint firstAttribute="leadingMargin" secondItem="2Qc-5H-8Gv" secondAttribute="leading" id="S5K-mI-1zV"/>
                                         <constraint firstItem="V98-wq-j87" firstAttribute="top" secondItem="TV0-Ad-CeD" secondAttribute="bottom" constant="10" id="SHJ-yw-fco"/>
                                         <constraint firstItem="917-nu-1B8" firstAttribute="leading" secondItem="V98-wq-j87" secondAttribute="trailing" id="Wzi-aR-IZ3"/>
+                                        <constraint firstItem="2Qc-5H-8Gv" firstAttribute="top" secondItem="YJn-H1-FbF" secondAttribute="topMargin" constant="40" id="bHl-Yc-4cd"/>
                                         <constraint firstItem="V98-wq-j87" firstAttribute="centerX" secondItem="YJn-H1-FbF" secondAttribute="centerX" id="gQP-1p-wVx"/>
                                         <constraint firstItem="se1-Mk-cLG" firstAttribute="top" secondItem="YJn-H1-FbF" secondAttribute="topMargin" constant="40" id="jSw-8L-j1Q"/>
                                         <constraint firstItem="XGz-aC-ala" firstAttribute="centerX" secondItem="YJn-H1-FbF" secondAttribute="centerX" id="liR-4t-OBu"/>
@@ -201,7 +214,85 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fZ3-OL-MRn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="125.59999999999999" y="87.706146926536732"/>
+            <point key="canvasLocation" x="1014" y="88"/>
+        </scene>
+        <!--Location View Controller-->
+        <scene sceneID="rMT-7G-neQ">
+            <objects>
+                <viewController storyboardIdentifier="Location" id="k85-NZ-YVr" customClass="LocationViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fBJ-L5-iQ0"/>
+                        <viewControllerLayoutGuide type="bottom" id="Vqf-PK-08y"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kHp-Ek-Iiz">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i7p-gY-jtC">
+                                <rect key="frame" x="82" y="318" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Back">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="locationModalDone:" destination="k85-NZ-YVr" eventType="touchUpInside" id="82X-aU-cYQ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bLP-Io-mwn">
+                                <rect key="frame" x="241" y="318" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Add">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="S7R-R9-9MT" kind="show" identifier="Map" id="M3O-8h-SfB"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="OoT-lr-hee"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Nl4-b9-f9c" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2903.1999999999998" y="87.706146926536732"/>
+        </scene>
+        <!--Map View Controller-->
+        <scene sceneID="1gr-Bs-DA5">
+            <objects>
+                <viewController storyboardIdentifier="Map" id="S7R-R9-9MT" customClass="MapViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="pFy-qd-gf7"/>
+                        <viewControllerLayoutGuide type="bottom" id="KrY-Sm-31u"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="aGZ-Si-KaM">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="sJm-Xe-DPb"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Bk2-qu-VLM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3788" y="88"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ncx-yQ-jST">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="rG5-4O-bhF" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="TTp-4R-2e0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="k85-NZ-YVr" kind="relationship" relationship="rootViewController" id="y44-Mz-TUX"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BwK-yf-4yR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1964" y="87.706146926536732"/>
         </scene>
     </scenes>
 </document>
