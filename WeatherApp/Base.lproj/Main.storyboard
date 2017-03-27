@@ -53,18 +53,18 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="se1-Mk-cLG">
-                                            <rect key="frame" x="154.5" y="48" width="65.5" height="43.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <rect key="frame" x="154" y="48" width="68.5" height="43.5"/>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="2Qc-5H-8Gv">
-                                            <rect key="frame" x="8" y="48" width="55" height="48"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                            <state key="normal">
-                                                <string key="title">Change
-location</string>
-                                            </state>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="2Qc-5H-8Gv">
+                                            <rect key="frame" x="232.5" y="72" width="15" height="15"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="15" id="1C9-3l-7tv"/>
+                                                <constraint firstAttribute="height" constant="15" id="2CA-fC-lUA"/>
+                                            </constraints>
+                                            <state key="normal" image="arrow"/>
                                             <connections>
                                                 <segue destination="rG5-4O-bhF" kind="presentation" identifier="Location" id="8Fw-Hg-f5z"/>
                                             </connections>
@@ -76,10 +76,10 @@ location</string>
                                         <constraint firstItem="XGz-aC-ala" firstAttribute="top" secondItem="V98-wq-j87" secondAttribute="bottom" constant="10" id="3gP-pb-CcJ"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="XGz-aC-ala" secondAttribute="bottom" constant="20" id="72F-iU-elS"/>
                                         <constraint firstItem="TV0-Ad-CeD" firstAttribute="top" secondItem="se1-Mk-cLG" secondAttribute="bottom" constant="10" id="PNb-Ea-0Mj"/>
-                                        <constraint firstAttribute="leadingMargin" secondItem="2Qc-5H-8Gv" secondAttribute="leading" id="S5K-mI-1zV"/>
                                         <constraint firstItem="V98-wq-j87" firstAttribute="top" secondItem="TV0-Ad-CeD" secondAttribute="bottom" constant="10" id="SHJ-yw-fco"/>
                                         <constraint firstItem="917-nu-1B8" firstAttribute="leading" secondItem="V98-wq-j87" secondAttribute="trailing" id="Wzi-aR-IZ3"/>
-                                        <constraint firstItem="2Qc-5H-8Gv" firstAttribute="top" secondItem="YJn-H1-FbF" secondAttribute="topMargin" constant="40" id="bHl-Yc-4cd"/>
+                                        <constraint firstItem="2Qc-5H-8Gv" firstAttribute="leading" secondItem="se1-Mk-cLG" secondAttribute="trailing" constant="10" id="cXY-XL-OSK"/>
+                                        <constraint firstItem="2Qc-5H-8Gv" firstAttribute="baseline" secondItem="se1-Mk-cLG" secondAttribute="baseline" id="dPN-b8-8Oe"/>
                                         <constraint firstItem="V98-wq-j87" firstAttribute="centerX" secondItem="YJn-H1-FbF" secondAttribute="centerX" id="gQP-1p-wVx"/>
                                         <constraint firstItem="se1-Mk-cLG" firstAttribute="top" secondItem="YJn-H1-FbF" secondAttribute="topMargin" constant="40" id="jSw-8L-j1Q"/>
                                         <constraint firstItem="XGz-aC-ala" firstAttribute="centerX" secondItem="YJn-H1-FbF" secondAttribute="centerX" id="liR-4t-OBu"/>
@@ -218,7 +218,7 @@ location</string>
             </objects>
             <point key="canvasLocation" x="1014" y="88"/>
         </scene>
-        <!--Location View Controller-->
+        <!--Change location-->
         <scene sceneID="rMT-7G-neQ">
             <objects>
                 <viewController storyboardIdentifier="Location" automaticallyAdjustsScrollViewInsets="NO" id="k85-NZ-YVr" customClass="LocationViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -277,7 +277,7 @@ location</string>
                             <constraint firstItem="qE8-up-LrC" firstAttribute="leading" secondItem="kHp-Ek-Iiz" secondAttribute="leading" id="lHi-hW-Gxs"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="OoT-lr-hee">
+                    <navigationItem key="navigationItem" title="Change location" id="OoT-lr-hee">
                         <barButtonItem key="leftBarButtonItem" style="plain" systemItem="cancel" id="evB-qH-tRB">
                             <color key="tintColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
@@ -327,6 +327,9 @@ location</string>
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -338,4 +341,7 @@ location</string>
             <point key="canvasLocation" x="1964" y="87.706146926536732"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="arrow" width="291" height="300"/>
+    </resources>
 </document>
