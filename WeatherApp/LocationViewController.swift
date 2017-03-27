@@ -8,24 +8,44 @@
 
 import UIKit
 
-class LocationViewController: UIViewController {
+class LocationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    @IBOutlet weak var locationTableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        locationTableView.delegate = self
+        locationTableView.dataSource = self
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationController?.isNavigationBarHidden = true
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.isNavigationBarHidden = false
-    }
-
-    @IBAction func locationModalDone(_ sender: UIButton) {
+    @IBAction func cancelModalView(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
 }
+
+
+extension LocationViewController {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Location") as! LocationCell
+        
+        cell.cityLabel.text = "Osijek"
+        cell.countryLabel.text = "Croatia"
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+    }
+}
+

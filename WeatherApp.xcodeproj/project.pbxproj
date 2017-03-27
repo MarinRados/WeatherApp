@@ -26,6 +26,8 @@
 		EA802DE21E857A87006D7805 /* DailyForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DE11E857A87006D7805 /* DailyForecast.swift */; };
 		EA802DE41E891907006D7805 /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DE31E891907006D7805 /* LocationViewController.swift */; };
 		EA802DE61E891922006D7805 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DE51E891922006D7805 /* MapViewController.swift */; };
+		EA802DE81E892F46006D7805 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DE71E892F46006D7805 /* Location.swift */; };
+		EA802DEA1E8935CE006D7805 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DE91E8935CE006D7805 /* LocationCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +52,8 @@
 		EA802DE11E857A87006D7805 /* DailyForecast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyForecast.swift; sourceTree = "<group>"; };
 		EA802DE31E891907006D7805 /* LocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
 		EA802DE51E891922006D7805 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		EA802DE71E892F46006D7805 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		EA802DE91E8935CE006D7805 /* LocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +109,7 @@
 		EA802DD81E83C8DA006D7805 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				EA802DE91E8935CE006D7805 /* LocationCell.swift */,
 				EA802DC01E7FDB09006D7805 /* CurrentWeatherCell.swift */,
 				EA802DC21E7FFD10006D7805 /* SevenDayForecastCell.swift */,
 				EA802DC41E7FFD21006D7805 /* AdditionalInfoCell.swift */,
@@ -118,6 +123,7 @@
 				EA802DC61E8003F7006D7805 /* CurrentWeather.swift */,
 				EA802DE11E857A87006D7805 /* DailyForecast.swift */,
 				EA802DD61E83C8A8006D7805 /* Coordinate.swift */,
+				EA802DE71E892F46006D7805 /* Location.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -208,6 +214,8 @@
 				EA802DD51E82B06B006D7805 /* WeatherViewModel.swift in Sources */,
 				EA802DAD1E7FCAB5006D7805 /* AppDelegate.swift in Sources */,
 				EA802DC51E7FFD21006D7805 /* AdditionalInfoCell.swift in Sources */,
+				EA802DE81E892F46006D7805 /* Location.swift in Sources */,
+				EA802DEA1E8935CE006D7805 /* LocationCell.swift in Sources */,
 				EA802DCF1E8117D7006D7805 /* APIClient.swift in Sources */,
 				EA802DBF1E7FD31F006D7805 /* WeatherViewController.swift in Sources */,
 				EA802DE01E8549F9006D7805 /* Date+Extensions.swift in Sources */,
