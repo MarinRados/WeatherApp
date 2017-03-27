@@ -59,12 +59,12 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="2Qc-5H-8Gv">
-                                            <rect key="frame" x="232.5" y="72" width="15" height="15"/>
+                                            <rect key="frame" x="232.5" y="67" width="20" height="20"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="15" id="1C9-3l-7tv"/>
-                                                <constraint firstAttribute="height" constant="15" id="2CA-fC-lUA"/>
+                                                <constraint firstAttribute="width" constant="20" id="1C9-3l-7tv"/>
+                                                <constraint firstAttribute="height" constant="20" id="2CA-fC-lUA"/>
                                             </constraints>
-                                            <state key="normal" image="arrow"/>
+                                            <state key="normal" image="edit"/>
                                             <connections>
                                                 <segue destination="rG5-4O-bhF" kind="presentation" identifier="Location" id="8Fw-Hg-f5z"/>
                                             </connections>
@@ -310,13 +310,30 @@
                     <view key="view" contentMode="scaleToFill" id="aGZ-Si-KaM">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="jhe-4V-WQk">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <connections>
+                                    <outlet property="delegate" destination="S7R-R9-9MT" id="YBS-vn-fuh"/>
+                                </connections>
+                            </mapView>
+                        </subviews>
                         <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="jhe-4V-WQk" firstAttribute="top" secondItem="pFy-qd-gf7" secondAttribute="bottom" id="Jv3-S3-FgU"/>
+                            <constraint firstItem="jhe-4V-WQk" firstAttribute="bottom" secondItem="KrY-Sm-31u" secondAttribute="top" id="Ole-oa-yKo"/>
+                            <constraint firstAttribute="trailing" secondItem="jhe-4V-WQk" secondAttribute="trailing" id="TcI-OB-WAd"/>
+                            <constraint firstItem="jhe-4V-WQk" firstAttribute="leading" secondItem="aGZ-Si-KaM" secondAttribute="leading" id="bvG-lF-j7n"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="sJm-Xe-DPb"/>
+                    <connections>
+                        <outlet property="mapView" destination="jhe-4V-WQk" id="QGA-bf-va8"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bk2-qu-VLM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3838" y="88"/>
+            <point key="canvasLocation" x="3837.5999999999999" y="87.706146926536732"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ncx-yQ-jST">
@@ -342,6 +359,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrow" width="291" height="300"/>
+        <image name="edit" width="24" height="24"/>
     </resources>
 </document>
