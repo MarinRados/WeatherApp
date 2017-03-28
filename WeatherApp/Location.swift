@@ -12,4 +12,10 @@ struct Location {
     var city: String
     var country: String
     var coordinate: Coordinate
+    
+    init?(city: String, country: String, coordinate: Coordinate) {
+        self.city = city
+        self.country = country
+        self.coordinate = coordinate
+    }
 }

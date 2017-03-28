@@ -57,8 +57,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
             let coordinate = Coordinate(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude)
             let location = Location(city: city, country: country, coordinate: coordinate)
             
-            if let delegate = self.locationDelegate {
-                delegate.addLocation(location)
+            if let delegate = self.locationDelegate, let newLocation = location {
+                delegate.addLocation(newLocation)
             }
             
             _ = self.navigationController?.popViewController(animated: true)

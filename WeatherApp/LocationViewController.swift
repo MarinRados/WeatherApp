@@ -11,7 +11,7 @@ import UIKit
 class LocationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, LocationDelegate {
 
     @IBOutlet weak var locationTableView: UITableView!
-    var location: Location?
+    var locations = [Location?]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,15 +31,17 @@ extension LocationViewController {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return locations.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "Location") as! LocationCell
         
-        cell.cityLabel.text = "Osijek"
-        cell.countryLabel.text = "Croatia"
+        let index = indexPath.row
+        
+        cell.cityLabel.text = locations[index]?.city
+        cell.countryLabel.text = locations[index]?.country
         
         return cell
     }
@@ -57,6 +59,8 @@ extension LocationViewController {
     
     func addLocation(_ location: Location) {
         print("Location VC \(location)")
+        locations.append(location)
+        locationTableView.reloadData()
     }
 }
 
