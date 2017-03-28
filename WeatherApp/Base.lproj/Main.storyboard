@@ -287,7 +287,7 @@
                         <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="xeE-xf-2EP">
                             <color key="tintColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <segue destination="S7R-R9-9MT" kind="show" id="s76-UZ-dDl"/>
+                                <segue destination="S7R-R9-9MT" kind="show" identifier="Map" id="s76-UZ-dDl"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -340,7 +340,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="rG5-4O-bhF" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="TTp-4R-2e0">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="TTp-4R-2e0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>

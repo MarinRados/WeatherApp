@@ -8,9 +8,10 @@
 
 import UIKit
 
-class LocationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class LocationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, LocationDelegate {
 
     @IBOutlet weak var locationTableView: UITableView!
+    var coordinate = Coordinate(latitude: 45.557968, longitude: 18.677825)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +23,6 @@ class LocationViewController: UIViewController, UITableViewDelegate, UITableView
         dismiss(animated: true, completion: nil)
     }
 }
-
 
 extension LocationViewController {
     
@@ -47,5 +47,18 @@ extension LocationViewController {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "Map" {
+            let destinationViewController = segue.destination as! MapViewController
+            destinationViewController.locationDelegate = self
+        }
+    }
+    
+    func addLocation(coordinate: Coordinate) {
+        print("Latitude in location: \(coordinate.latitude), Longitude in location: \(coordinate.longitude)")
+    }
 }
+
+
 

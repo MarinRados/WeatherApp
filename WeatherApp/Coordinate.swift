@@ -9,8 +9,8 @@
 import Foundation
 
 struct Coordinate {
-    let latitude: Double
-    let longitude: Double
+    var latitude: Double
+    var longitude: Double
 }
 
 extension Coordinate: CustomStringConvertible {

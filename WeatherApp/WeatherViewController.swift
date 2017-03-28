@@ -30,7 +30,6 @@ class WeatherViewController: UITableViewController {
         
         viewModel.onForecastSuccess = { [weak self] data in
             self?.forecastData = data
-            print("PRESENTABLE DATA \(self?.forecastData)")
             self?.tableView.reloadData()
             self?.refreshControl?.endRefreshing()
         }

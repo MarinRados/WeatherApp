@@ -60,8 +60,6 @@ class APIClient {
             
             var sevenDayForecast = [DailyForecast]()
             
-            print(json)
-            
             for index in 0...7 {
                 guard let dailyForecast = DailyForecast(json: json, index: index) else {
                     completion(nil, .jsonParsingFailure)
@@ -70,7 +68,6 @@ class APIClient {
                 sevenDayForecast.append(dailyForecast)
             }
             
-            print("\(sevenDayForecast)")
             completion(sevenDayForecast, nil)
         }
         
