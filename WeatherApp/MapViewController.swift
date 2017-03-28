@@ -10,8 +10,7 @@ import UIKit
 import MapKit
 
 class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognizerDelegate {
-
-    var coordinate = Coordinate(latitude: 45.557968, longitude: 18.677825)
+    
     var locationDelegate: LocationDelegate?
     
     @IBOutlet weak var mapView: MKMapView! {
@@ -38,30 +37,38 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         let locationCoordinate = mapView.convert(touchLocation, toCoordinateFrom: mapView)
         
         let geoCoder = CLGeocoder()
-        let location = CLLocation(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude)
-        geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) -> Void in
+        let mapLocation = CLLocation(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude)
+        
+        geoCoder.reverseGeocodeLocation(mapLocation, completionHandler: { (placemarks, error) -> Void in
         
             var placeMark: CLPlacemark?
             placeMark = placemarks?[0]
             
-            if let city = placeMark?.addressDictionary?["City"] as? String {
-                print("GRAD \(city)")
+            guard let city = placeMark?.addressDictionary?["City"] as? String else {
+                self.showAlertWith(message: "Please pick an inhabited location.")
+                return
             }
             
-            if let country = placeMark?.addressDictionary?["Country"] as? String {
-                print("DRŽAVA \(country)")
+            guard let country = placeMark?.addressDictionary?["Country"] as? String  else {
+                self.showAlertWith(message: "Please pick an inhabited location.")
+                return
             }
             
+            let coordinate = Coordinate(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude)
+            let location = Location(city: city, country: country, coordinate: coordinate)
+            
+            if let delegate = self.locationDelegate {
+                delegate.addLocation(location)
+            }
+            
+            _ = self.navigationController?.popViewController(animated: true)
         })
-        
-        print("Latitude \(locationCoordinate.latitude), Longitude \(locationCoordinate.longitude)")
-        coordinate.latitude = locationCoordinate.latitude
-        coordinate.longitude = locationCoordinate.longitude
-        
-        if let delegate = locationDelegate {
-            delegate.addLocation(coordinate: coordinate)
-        }
-        
-        _ = navigationController?.popViewController(animated: true)
+    }
+    
+    func showAlertWith(message: String) {
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(action)
+        present(alertController, animated: true, completion: nil)
     }
 }

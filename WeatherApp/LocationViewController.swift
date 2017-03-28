@@ -11,7 +11,7 @@ import UIKit
 class LocationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, LocationDelegate {
 
     @IBOutlet weak var locationTableView: UITableView!
-    var coordinate = Coordinate(latitude: 45.557968, longitude: 18.677825)
+    var location: Location?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,8 +55,8 @@ extension LocationViewController {
         }
     }
     
-    func addLocation(coordinate: Coordinate) {
-        print("Latitude in location: \(coordinate.latitude), Longitude in location: \(coordinate.longitude)")
+    func addLocation(_ location: Location) {
+        print("Location VC \(location)")
     }
 }
 

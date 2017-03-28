@@ -9,7 +9,7 @@
 import Foundation
 
 struct Location {
-    let city: String
-    let country: String
-    let coordinate: Coordinate
+    var city: String
+    var country: String
+    var coordinate: Coordinate
 }

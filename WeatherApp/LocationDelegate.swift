@@ -10,7 +10,7 @@ import Foundation
 
 protocol LocationDelegate {
     
-    func addLocation(coordinate: Coordinate)
+    func addLocation(_ location: Location)
 }
 
 
