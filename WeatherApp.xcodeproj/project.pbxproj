@@ -29,7 +29,7 @@
 		EA802DE81E892F46006D7805 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DE71E892F46006D7805 /* Location.swift */; };
 		EA802DEA1E8935CE006D7805 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DE91E8935CE006D7805 /* LocationCell.swift */; };
 		EA802DED1E8A4F5E006D7805 /* LocationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DEC1E8A4F5E006D7805 /* LocationDelegate.swift */; };
-		EA802DEF1E8A5C16006D7805 /* LocationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DEE1E8A5C16006D7805 /* LocationError.swift */; };
+		EA802DF21E8A9AF9006D7805 /* ChangeLocationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DF11E8A9AF9006D7805 /* ChangeLocationDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,7 +57,7 @@
 		EA802DE71E892F46006D7805 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		EA802DE91E8935CE006D7805 /* LocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 		EA802DEC1E8A4F5E006D7805 /* LocationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationDelegate.swift; sourceTree = "<group>"; };
-		EA802DEE1E8A5C16006D7805 /* LocationError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationError.swift; sourceTree = "<group>"; };
+		EA802DF11E8A9AF9006D7805 /* ChangeLocationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeLocationDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				EA802DEC1E8A4F5E006D7805 /* LocationDelegate.swift */,
+				EA802DF11E8A9AF9006D7805 /* ChangeLocationDelegate.swift */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -152,7 +153,6 @@
 		EA802DF01E8A5C3C006D7805 /* Errors */ = {
 			isa = PBXGroup;
 			children = (
-				EA802DEE1E8A5C16006D7805 /* LocationError.swift */,
 				EA802DCC1E801C3E006D7805 /* ForecastError.swift */,
 			);
 			name = Errors;
@@ -243,12 +243,12 @@
 				EA802DE01E8549F9006D7805 /* Date+Extensions.swift in Sources */,
 				EA802DCD1E801C3E006D7805 /* ForecastError.swift in Sources */,
 				EA802DED1E8A4F5E006D7805 /* LocationDelegate.swift in Sources */,
+				EA802DF21E8A9AF9006D7805 /* ChangeLocationDelegate.swift in Sources */,
 				EA802DC11E7FDB09006D7805 /* CurrentWeatherCell.swift in Sources */,
 				EA802DD31E816477006D7805 /* WeatherIcon.swift in Sources */,
 				EA802DC71E8003F7006D7805 /* CurrentWeather.swift in Sources */,
 				EA802DC31E7FFD10006D7805 /* SevenDayForecastCell.swift in Sources */,
 				EA802DD71E83C8A8006D7805 /* Coordinate.swift in Sources */,
-				EA802DEF1E8A5C16006D7805 /* LocationError.swift in Sources */,
 				EA802DE21E857A87006D7805 /* DailyForecast.swift in Sources */,
 				EA802DE61E891922006D7805 /* MapViewController.swift in Sources */,
 			);

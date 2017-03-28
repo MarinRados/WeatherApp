@@ -1,5 +1,5 @@
 //
-//  LocationError.swift
+//  ChangeLocationDelegate.swift
 //  WeatherApp
 //
 //  Created by Marin Rados on 28/03/2017.
@@ -8,7 +8,19 @@
 
 import Foundation
 
-enum LocationError: Error {
-    case noCityFound
-    case noCountryFound
+protocol ChangeLocationDelegate {
+    
+    func changeLocation(_ location: Location)
 }
+
+
+
+
+
+
+
+
+
+
+
+

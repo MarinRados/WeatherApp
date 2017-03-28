@@ -8,17 +8,20 @@
 
 import UIKit
 
-class WeatherViewController: UITableViewController {
+class WeatherViewController: UITableViewController, ChangeLocationDelegate {
     
 
     var viewModel: WeatherViewModel!
     var currentData: CurrentWeatherPresentable? = nil
     var forecastData: [SevenDayForecastPresentable]? = nil
-    let coordinate = Coordinate(latitude: 45.557968, longitude: 18.677825)
+    var currentLocation: Location? = Location(city: "Osijek", country: "Croatia", coordinate: Coordinate(latitude: 45.557968, longitude: 18.677825))
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setViewModel()
+        guard let coordinate = currentLocation?.coordinate else {
+            return
+        }
         viewModel.getWeather(coordinates: coordinate)
         viewModel.getForecast(coordinates: coordinate)
 
@@ -51,6 +54,9 @@ class WeatherViewController: UITableViewController {
     }
     
     func refreshWeather(refreshControl: UIRefreshControl) {
+        guard let coordinate = currentLocation?.coordinate else {
+            return
+        }
         viewModel.getWeather(coordinates: coordinate)
         viewModel.getForecast(coordinates: coordinate)
     }
@@ -94,9 +100,13 @@ class WeatherViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
+        guard let currentLocation = currentLocation else {
+            return nil
+        }
+        
         let headerCell = tableView.dequeueReusableCell(withIdentifier: "CurrentWeather") as! CurrentWeatherCell
         headerCell.temperatureLabel.text = currentData?.temperature
-        headerCell.locationLabel.text = "Osijek, Croatia"
+        headerCell.locationLabel.text = "\(currentLocation.city), \(currentLocation.country)"
         headerCell.weatherImage.image = currentData?.icon
         headerCell.summaryLabel.text = currentData?.summary
         return headerCell
@@ -127,5 +137,25 @@ class WeatherViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 140
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        var destinationViewController = segue.destination
+        if let navigationController = destinationViewController as? UINavigationController {
+            destinationViewController = navigationController.visibleViewController ?? destinationViewController
+        }
+        if let locationViewController = destinationViewController as? LocationViewController {
+            locationViewController.changeLocationDelegate = self
+        }
+    }
+    
+    func changeLocation(_ location: Location) {
+        currentLocation = location
+        guard let coordinate = currentLocation?.coordinate else {
+            return
+        }
+        viewModel.getWeather(coordinates: coordinate)
+        viewModel.getForecast(coordinates: coordinate)
+        tableView.reloadData()
     }
 }

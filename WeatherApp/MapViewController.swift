@@ -15,7 +15,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     
     @IBOutlet weak var mapView: MKMapView! {
         didSet {
-            mapView.mapType = .hybrid
+            mapView.mapType = .standard
             mapView.delegate = self
             let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(MapViewController.getLocationWith(gesture:)))
             gestureRecognizer.minimumPressDuration = 1.0
@@ -45,12 +45,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
             placeMark = placemarks?[0]
             
             guard let city = placeMark?.addressDictionary?["City"] as? String else {
-                self.showAlertWith(message: "Please pick an inhabited location.")
+                self.showAlertWith(message: "Please pick a location closer to a settlement.")
                 return
             }
             
             guard let country = placeMark?.addressDictionary?["Country"] as? String  else {
-                self.showAlertWith(message: "Please pick an inhabited location.")
+                self.showAlertWith(message: "Please pick a location closer to a settlement.")
                 return
             }
             

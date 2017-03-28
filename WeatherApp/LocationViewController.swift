@@ -11,6 +11,7 @@ import UIKit
 class LocationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, LocationDelegate {
 
     @IBOutlet weak var locationTableView: UITableView!
+    var changeLocationDelegate: ChangeLocationDelegate?
     var locations = [Location?]()
     
     override func viewDidLoad() {
@@ -42,12 +43,21 @@ extension LocationViewController {
         
         cell.cityLabel.text = locations[index]?.city
         cell.countryLabel.text = locations[index]?.country
+        cell.selectionStyle = .none
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        let index = indexPath.row
+        guard let newLocation = locations[index] else {
+            return
+        }
+        if let delegate = self.changeLocationDelegate {
+            delegate.changeLocation(newLocation)
+        }
+        dismiss(animated: true, completion: nil)
+
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
