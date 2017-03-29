@@ -19,3 +19,15 @@ struct Location {
         self.coordinate = coordinate
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

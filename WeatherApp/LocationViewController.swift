@@ -12,7 +12,10 @@ class LocationViewController: UIViewController, UITableViewDelegate, UITableView
 
     @IBOutlet weak var locationTableView: UITableView!
     var changeLocationDelegate: ChangeLocationDelegate?
-    var locations = [Location?]()
+    var locations = [Location]()
+    var locationsDictionary = [[String: Any]]()
+    
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,8 +23,41 @@ class LocationViewController: UIViewController, UITableViewDelegate, UITableView
         locationTableView.dataSource = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        let newLocations = defaults.object(forKey: "locations")
+        convertToArrayFrom(newLocations as! [[String : Any]])
+    }
+    
     @IBAction func cancelModalView(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
+    }
+    
+    func convertToDictionaryFrom(_ array: [Location]) {
+        for data in array {
+            let dictionary: [String: Any] = [
+                "city": data.city,
+                "country": data.country,
+                "coordinate": [
+                    "latitude": data.coordinate.latitude,
+                    "longitude": data.coordinate.longitude
+                ]
+            ]
+            locationsDictionary.append(dictionary)
+        }
+    }
+    
+    func convertToArrayFrom(_ dictionary: [[String: Any]]) {
+        for dict in dictionary {
+            guard let city = dict["city"] as? String,
+                let country = dict["country"] as? String,
+                let coordinate = dict["coordinate"] as? [String: Any],
+                let latitude = coordinate["latitude"] as? Double,
+                let longitude = coordinate["longitude"] as? Double else { return }
+            
+            if let location = Location(city: city, country: country, coordinate: Coordinate(latitude: latitude, longitude: longitude)) {
+                locations.append(location)
+            }
+        }
     }
 }
 
@@ -41,8 +77,8 @@ extension LocationViewController {
         
         let index = indexPath.row
         
-        cell.cityLabel.text = locations[index]?.city
-        cell.countryLabel.text = locations[index]?.country
+        cell.cityLabel.text = locations[index].city
+        cell.countryLabel.text = locations[index].country
         cell.selectionStyle = .none
         
         return cell
@@ -50,9 +86,7 @@ extension LocationViewController {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let index = indexPath.row
-        guard let newLocation = locations[index] else {
-            return
-        }
+        let newLocation = locations[index]
         if let delegate = self.changeLocationDelegate {
             delegate.changeLocation(newLocation)
         }
@@ -70,6 +104,9 @@ extension LocationViewController {
     func addLocation(_ location: Location) {
         print("Location VC \(location)")
         locations.append(location)
+        convertToDictionaryFrom(locations)
+        print("NEW LOCATIONS \(locationsDictionary)")
+        defaults.set(locationsDictionary, forKey: "locations")
         locationTableView.reloadData()
     }
 }
