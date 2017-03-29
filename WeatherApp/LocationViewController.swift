@@ -104,8 +104,10 @@ extension LocationViewController {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             locations.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .none)
             defaults.removeObject(forKey: locationsKey)
+            locationsDictionary = convertToDictionaryFrom(locations)
+            defaults.set(locationsDictionary, forKey: locationsKey)
+            tableView.deleteRows(at: [indexPath], with: .none)
             locationTableView.reloadData()
         }
     }
