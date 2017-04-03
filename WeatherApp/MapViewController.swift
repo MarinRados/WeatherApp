@@ -12,38 +12,35 @@ import MapKit
 class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognizerDelegate, CLLocationManagerDelegate {
     
     var locationDelegate: LocationDelegate?
+    var currentLocation: Location?
     let locationManager = CLLocationManager()
     
-    @IBOutlet weak var mapView: MKMapView! {
-        didSet {
-            getLocationManager()
-            mapView.mapType = .standard
-            mapView.delegate = self
-            print("This should happen second")
-            let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(MapViewController.getLocationWith(gesture:)))
-            gestureRecognizer.minimumPressDuration = 1.0
-            gestureRecognizer.delaysTouchesBegan = true
-            gestureRecognizer.delegate = self
-            self.mapView.addGestureRecognizer(gestureRecognizer)
-        }
-    }
+    @IBOutlet weak var mapView: MKMapView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    
-    func getLocationManager() {
-        locationManager.delegate = self
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
-            locationManager.startUpdatingLocation()
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        var location = locations[0]
         
-        print("This should happen first")
+        mapView.mapType = .standard
+        mapView.delegate = self
+        guard let centerLocation = currentLocation else {
+            return
+        }
+        getMapCenterFrom(currentLocation: centerLocation)
+        let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(MapViewController.getLocationWith(gesture:)))
+        gestureRecognizer.minimumPressDuration = 1.0
+        gestureRecognizer.delaysTouchesBegan = true
+        gestureRecognizer.delegate = self
+        self.mapView.addGestureRecognizer(gestureRecognizer)
+    }
+    
+    func getMapCenterFrom(currentLocation: Location) {
+        var centerCoordinate = CLLocationCoordinate2D()
+        centerCoordinate.latitude = currentLocation.coordinate.latitude
+        centerCoordinate.longitude = currentLocation.coordinate.longitude
+        self.mapView.setCenter(centerCoordinate, animated: false)
+        let span = MKCoordinateSpanMake(5.0, 5.0)
+        let region = MKCoordinateRegion(center: centerCoordinate, span: span)
+        self.mapView.setRegion(region, animated: false)
     }
     
     func getLocationWith(gesture: UILongPressGestureRecognizer) {

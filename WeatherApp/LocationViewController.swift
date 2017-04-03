@@ -14,6 +14,7 @@ class LocationViewController: UIViewController, UITableViewDelegate, UITableView
     var changeLocationDelegate: ChangeLocationDelegate?
     var locations = [Location]()
     var locationsDictionary = [[String: Any]]()
+    var currentLocation: Location?
     let locationsKey = "locations"
     
     let defaults = UserDefaults.standard
@@ -116,6 +117,7 @@ extension LocationViewController {
         if segue.identifier == "Map" {
             let destinationViewController = segue.destination as! MapViewController
             destinationViewController.locationDelegate = self
+            destinationViewController.currentLocation = currentLocation
         }
     }
     

@@ -20,20 +20,11 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.locationManager.requestWhenInUseAuthorization()
         
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
-            locationManager.startUpdatingLocation()
-        }
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
         
         setViewModel()
-//        guard let coordinate = currentLocation?.coordinate else {
-//            return
-//        }
-//        viewModel.getWeather(coordinates: coordinate)
-//        viewModel.getForecast(coordinates: coordinate)
 
         viewModel.onSuccess = { [weak self] data in
             self?.currentData = data
@@ -61,6 +52,19 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
         
         self.refreshControl?.addTarget(self, action: #selector(WeatherViewController.refreshWeather), for: UIControlEvents.valueChanged)
 
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
+        case .authorizedWhenInUse:
+            locationManager.startUpdatingLocation()
+        case .denied:
+            showAlertForDeniedAuthorization()
+        default:
+            break
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -107,6 +111,25 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(action)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func showAlertForDeniedAuthorization() {
+        let alertController = UIAlertController (title: nil, message: "Application authorization disabled. To re-enable go to settings.", preferredStyle: .alert)
+        
+        let settingsAction = UIAlertAction(title: "Go to settings", style: .default) { (_) -> Void in
+            guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+                return
+            }
+            
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, options: [:], completionHandler: nil)
+            }
+        }
+        alertController.addAction(settingsAction)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+        alertController.addAction(cancelAction)
+        
         present(alertController, animated: true, completion: nil)
     }
     
@@ -184,6 +207,7 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
         }
         if let locationViewController = destinationViewController as? LocationViewController {
             locationViewController.changeLocationDelegate = self
+            locationViewController.currentLocation = currentLocation
         }
     }
     
