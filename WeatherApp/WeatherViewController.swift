@@ -7,23 +7,33 @@
 //
 
 import UIKit
+import CoreLocation
 
-class WeatherViewController: UITableViewController, ChangeLocationDelegate {
+class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLocationManagerDelegate {
     
 
     var viewModel: WeatherViewModel!
     var currentData: CurrentWeatherPresentable? = nil
     var forecastData: [SevenDayForecastPresentable]? = nil
-    var currentLocation: Location? = Location(city: "Osijek", country: "Croatia", coordinate: Coordinate(latitude: 45.557968, longitude: 18.677825))
+    var currentLocation: Location?
+    let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setViewModel()
-        guard let coordinate = currentLocation?.coordinate else {
-            return
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
+            locationManager.startUpdatingLocation()
         }
-        viewModel.getWeather(coordinates: coordinate)
-        viewModel.getForecast(coordinates: coordinate)
+        
+        setViewModel()
+//        guard let coordinate = currentLocation?.coordinate else {
+//            return
+//        }
+//        viewModel.getWeather(coordinates: coordinate)
+//        viewModel.getForecast(coordinates: coordinate)
 
         viewModel.onSuccess = { [weak self] data in
             self?.currentData = data
@@ -49,11 +59,39 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate {
             self?.refreshControl?.endRefreshing()
         }
         
-        self.refreshControl?.addTarget(self, action: #selector(WeatherViewController.refreshWeather(refreshControl:)), for: UIControlEvents.valueChanged)
+        self.refreshControl?.addTarget(self, action: #selector(WeatherViewController.refreshWeather), for: UIControlEvents.valueChanged)
 
     }
     
-    func refreshWeather(refreshControl: UIRefreshControl) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let userLocation = locations[0]
+        
+        let geoCoder = CLGeocoder()
+
+        geoCoder.reverseGeocodeLocation(userLocation, completionHandler: { (placemarks, error) -> Void in
+            
+            var placeMark: CLPlacemark?
+            placeMark = placemarks?[0]
+            
+            guard let city = placeMark?.addressDictionary?["City"] as? String else {
+                print("No city")
+                return
+            }
+            
+            guard let country = placeMark?.addressDictionary?["Country"] as? String  else {
+                print("No country")
+                return
+            }
+            
+            let newCoordinate = Coordinate(latitude: userLocation.coordinate.latitude, longitude: userLocation.coordinate.longitude)
+            let newLocation = Location(city: city, country: country, coordinate: newCoordinate)
+            self.currentLocation = newLocation
+            
+            self.refreshWeather()
+        })
+    }
+
+    func refreshWeather() {
         guard let coordinate = currentLocation?.coordinate else {
             return
         }

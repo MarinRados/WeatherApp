@@ -9,14 +9,17 @@
 import UIKit
 import MapKit
 
-class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognizerDelegate {
+class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognizerDelegate, CLLocationManagerDelegate {
     
     var locationDelegate: LocationDelegate?
+    let locationManager = CLLocationManager()
     
     @IBOutlet weak var mapView: MKMapView! {
         didSet {
+            getLocationManager()
             mapView.mapType = .standard
             mapView.delegate = self
+            print("This should happen second")
             let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(MapViewController.getLocationWith(gesture:)))
             gestureRecognizer.minimumPressDuration = 1.0
             gestureRecognizer.delaysTouchesBegan = true
@@ -27,6 +30,20 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    func getLocationManager() {
+        locationManager.delegate = self
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
+            locationManager.startUpdatingLocation()
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        var location = locations[0]
+        
+        print("This should happen first")
     }
     
     func getLocationWith(gesture: UILongPressGestureRecognizer) {
