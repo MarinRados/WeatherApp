@@ -10,7 +10,7 @@ import Foundation
 
 protocol ChangeLocationDelegate {
     
-    func changeLocation(_ location: Location)
+    func changeLocation(_ location: Location, atIndex index: Int)
 }
 
 

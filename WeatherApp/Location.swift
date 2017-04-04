@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Location {
+struct Location: Equatable {
     var city: String
     var country: String
     var coordinate: Coordinate
@@ -17,6 +17,10 @@ struct Location {
         self.city = city
         self.country = country
         self.coordinate = coordinate
+    }
+    
+    static func == (left: Location, right: Location) -> Bool {
+        return left.city == right.city
     }
 }
 

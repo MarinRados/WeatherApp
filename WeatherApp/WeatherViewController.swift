@@ -11,17 +11,37 @@ import CoreLocation
 
 class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLocationManagerDelegate {
     
-
     var viewModel: WeatherViewModel!
     var currentData: CurrentWeatherPresentable? = nil
     var forecastData: [SevenDayForecastPresentable]? = nil
     var currentLocation: Location?
+    var trackedLocation: Location?
+    var allLocations = [Location]()
     let locationManager = CLLocationManager()
     let defaults = UserDefaults.standard
     let lastLocationKey = "lastLocation"
+    let locationsKey = "locations"
+    var pagerIndex = 0
+    var numberOfSavedLocations: Int = 0
+    
+    override func viewWillAppear(_ animated: Bool) {
+        guard let newLocations = defaults.object(forKey: locationsKey) else {
+            return
+        }
+        allLocations = convertToArrayFrom(newLocations as! [[String : Any]])
+        numberOfSavedLocations = allLocations.count
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
+        swipeRight.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(swipeRight)
+        
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
+        swipeLeft.direction = UISwipeGestureRecognizerDirection.left
+        self.view.addGestureRecognizer(swipeLeft)
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
@@ -56,6 +76,61 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
 
     }
     
+    func respondToSwipeGesture(gesture: UIGestureRecognizer) {
+        var index = 0
+        var currentIndex = 0
+        for location in allLocations {
+            if currentLocation?.city == location.city {
+                index = currentIndex
+            }
+            currentIndex = currentIndex + 1
+        }
+        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+            switch swipeGesture.direction {
+            case UISwipeGestureRecognizerDirection.right:
+                onSwipeRightFrom(index: index)
+            case UISwipeGestureRecognizerDirection.left:
+                onSwipeLeftFrom(index: index)
+            default:
+                break
+            }
+        }
+    }
+    
+    func onSwipeRightFrom(index: Int) {
+        let previousIndex = index - 1
+        
+        guard previousIndex >= 0 else {
+            return
+        }
+        
+        guard allLocations.count > previousIndex else {
+            return
+        }
+        
+        currentLocation = allLocations[previousIndex]
+        pagerIndex = previousIndex
+        refreshWeather()
+    }
+    
+    func onSwipeLeftFrom(index: Int) {
+        let nextIndex = index + 1
+        
+        let locationsCount = allLocations.count
+        
+        guard locationsCount != nextIndex else {
+            return
+        }
+        
+        guard locationsCount > nextIndex else {
+            return
+        }
+        
+        currentLocation = allLocations[nextIndex]
+        pagerIndex = nextIndex
+        refreshWeather()
+    }
+    
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .notDetermined:
@@ -72,7 +147,7 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
                 showAlertForDeniedAuthorization()
                 return
             }
-            currentLocation = convertToArrayFrom(lastLocation as! [String : Any])
+            currentLocation = convertToLocationFrom(lastLocation as! [String : Any])
             refreshWeather()
             showAlertForCurrentLocationEnabling()
         default:
@@ -99,10 +174,29 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
             }
             
             let newCoordinate = Coordinate(latitude: userLocation.coordinate.latitude, longitude: userLocation.coordinate.longitude)
-            let newLocation = Location(city: city, country: country, coordinate: newCoordinate)
-            self.currentLocation = newLocation
             
-            self.refreshWeather()
+            let newLocation = Location(city: city, country: country, coordinate: newCoordinate)
+            self.trackedLocation = newLocation
+            if self.numberOfSavedLocations < self.allLocations.count {
+                if let firstLocation = self.trackedLocation {
+                    self.allLocations[0] = firstLocation
+                    for location in self.allLocations {
+                        if self.currentLocation == location {
+                            return
+                        }
+                    }
+                    if self.currentLocation != self.trackedLocation {
+                        self.currentLocation = self.trackedLocation
+                        self.refreshWeather()
+                    }
+                }
+            } else {
+                if let firstLocation = self.trackedLocation {
+                    self.allLocations.insert(firstLocation, at: 0)
+                    self.currentLocation = self.allLocations[0]
+                    self.refreshWeather()
+                }
+            }
         })
     }
 
@@ -112,6 +206,7 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
         }
         viewModel.getWeather(coordinates: coordinate)
         viewModel.getForecast(coordinates: coordinate)
+        tableView.reloadData()
     }
     
     private func setViewModel(){
@@ -202,6 +297,8 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
         headerCell.locationLabel.text = "\(currentLocation.city), \(currentLocation.country)"
         headerCell.weatherImage.image = currentData?.icon
         headerCell.summaryLabel.text = currentData?.summary
+        headerCell.pageControl.numberOfPages = allLocations.count
+        headerCell.pageControl.currentPage = pagerIndex
         return headerCell
     }
     
@@ -239,6 +336,7 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
         }
         if let locationViewController = destinationViewController as? LocationViewController {
             locationViewController.changeLocationDelegate = self
+            locationViewController.trackedLocation = trackedLocation
             locationViewController.currentLocation = currentLocation
         }
     }
@@ -255,7 +353,7 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
         return dictionary
     }
     
-    func convertToArrayFrom(_ dictionary: [String: Any]) -> Location? {
+    func convertToLocationFrom(_ dictionary: [String: Any]) -> Location? {
         guard let city = dictionary["city"] as? String,
             let country = dictionary["country"] as? String,
             let coordinate = dictionary["coordinate"] as? [String: Any],
@@ -266,19 +364,30 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
         
         return location
     }
+    
+    func convertToArrayFrom(_ dictionary: [[String: Any]]) -> [Location] {
+        var convertedLocations = [Location]()
+        for dict in dictionary {
+            guard let city = dict["city"] as? String,
+                let country = dict["country"] as? String,
+                let coordinate = dict["coordinate"] as? [String: Any],
+                let latitude = coordinate["latitude"] as? Double,
+                let longitude = coordinate["longitude"] as? Double else { return [] }
+            
+            if let location = Location(city: city, country: country, coordinate: Coordinate(latitude: latitude, longitude: longitude)) {
+                convertedLocations.append(location)
+            }
+        }
+        return convertedLocations
+    }
 
-    func changeLocation(_ location: Location) {
-        locationManager.stopUpdatingLocation()
+    func changeLocation(_ location: Location, atIndex index: Int) {
         currentLocation = location
+        pagerIndex = index + 1
         if !LocationService.isAuthorized {
             let lastLocationDictionary = convertToDictionaryFrom(location)
             defaults.set(lastLocationDictionary, forKey: lastLocationKey)
         }
-        guard let coordinate = currentLocation?.coordinate else {
-            return
-        }
-        viewModel.getWeather(coordinates: coordinate)
-        viewModel.getForecast(coordinates: coordinate)
-        tableView.reloadData()
+        refreshWeather()
     }
 }

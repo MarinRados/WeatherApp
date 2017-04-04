@@ -14,6 +14,7 @@ class LocationViewController: UIViewController, UITableViewDelegate, UITableView
     var changeLocationDelegate: ChangeLocationDelegate?
     var locations = [Location]()
     var locationsDictionary = [[String: Any]]()
+    var trackedLocation: Location?
     var currentLocation: Location?
     let locationsKey = "locations"
     
@@ -30,6 +31,9 @@ class LocationViewController: UIViewController, UITableViewDelegate, UITableView
             return
         }
         locations = convertToArrayFrom(newLocations as! [[String : Any]])
+        if locations[0] == trackedLocation {
+            locations.remove(at: 0)
+        }
     }
     
     @IBAction func cancelModalView(_ sender: UIBarButtonItem) {
@@ -38,6 +42,11 @@ class LocationViewController: UIViewController, UITableViewDelegate, UITableView
         } else if currentLocation == nil {
             showAlertWith(message: "Please select one of your added locations to see the weather.")
         } else {
+            if let firstLocation = trackedLocation {
+                locations.insert(firstLocation, at: 0)
+                locationsDictionary = convertToDictionaryFrom(locations)
+                defaults.set(locationsDictionary, forKey: locationsKey)
+            }
             dismiss(animated: true, completion: nil)
         }
     }
@@ -108,8 +117,13 @@ extension LocationViewController {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let index = indexPath.row
         let newLocation = locations[index]
+        if let firstLocation = trackedLocation {
+            locations.insert(firstLocation, at: 0)
+            locationsDictionary = convertToDictionaryFrom(locations)
+            defaults.set(locationsDictionary, forKey: locationsKey)
+        }
         if let delegate = self.changeLocationDelegate {
-            delegate.changeLocation(newLocation)
+            delegate.changeLocation(newLocation, atIndex: index)
         }
         dismiss(animated: true, completion: nil)
 
@@ -130,7 +144,7 @@ extension LocationViewController {
         if segue.identifier == "Map" {
             let destinationViewController = segue.destination as! MapViewController
             destinationViewController.locationDelegate = self
-            destinationViewController.currentLocation = currentLocation
+            destinationViewController.currentLocation = trackedLocation
         }
     }
     

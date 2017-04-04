@@ -13,7 +13,7 @@
         <!--Weather View Controller-->
         <scene sceneID="2gw-qi-KJy">
             <objects>
-                <tableViewController id="S0n-0x-VJu" customClass="WeatherViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="WeatherViewController" id="S0n-0x-VJu" customClass="WeatherViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="60" sectionHeaderHeight="18" sectionFooterHeight="18" id="LVP-94-dwC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -28,38 +28,38 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="748" text="Temp" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V98-wq-j87">
-                                            <rect key="frame" x="114.5" y="186.5" width="146" height="72"/>
+                                            <rect key="frame" x="114.5" y="163.5" width="146" height="67.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="60"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="253" verticalCompressionResistancePriority="752" text="Summary" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XGz-aC-ala">
-                                            <rect key="frame" x="151" y="268.5" width="73" height="20.5"/>
+                                            <rect key="frame" x="151" y="241" width="73" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="743" text="°" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="917-nu-1B8">
-                                            <rect key="frame" x="260.5" y="186.5" width="22" height="72"/>
+                                            <rect key="frame" x="260.5" y="163.5" width="22" height="72"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="60"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="248" translatesAutoresizingMaskIntoConstraints="NO" id="TV0-Ad-CeD">
-                                            <rect key="frame" x="150.5" y="101.5" width="75" height="75"/>
+                                            <rect key="frame" x="150.5" y="78.5" width="75" height="75"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="75" id="NEN-db-EdH"/>
                                                 <constraint firstAttribute="width" constant="75" id="euF-SS-wkq"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="se1-Mk-cLG">
-                                            <rect key="frame" x="154" y="48" width="68.5" height="43.5"/>
+                                            <rect key="frame" x="154" y="48" width="68.5" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="2Qc-5H-8Gv">
-                                            <rect key="frame" x="232.5" y="67" width="20" height="20"/>
+                                            <rect key="frame" x="232.5" y="44" width="20" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="20" id="1C9-3l-7tv"/>
                                                 <constraint firstAttribute="height" constant="20" id="2CA-fC-lUA"/>
@@ -69,16 +69,22 @@
                                                 <segue destination="rG5-4O-bhF" kind="presentation" identifier="Location" id="8Fw-Hg-f5z"/>
                                             </connections>
                                         </button>
+                                        <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="5CW-Dt-Kp4">
+                                            <rect key="frame" x="168" y="266.5" width="39" height="37"/>
+                                            <color key="currentPageIndicatorTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </pageControl>
                                     </subviews>
                                     <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
+                                        <constraint firstAttribute="bottomMargin" secondItem="5CW-Dt-Kp4" secondAttribute="bottom" constant="5" id="1GR-J8-cN7"/>
+                                        <constraint firstItem="5CW-Dt-Kp4" firstAttribute="top" secondItem="XGz-aC-ala" secondAttribute="bottom" constant="5" id="1Jf-l2-DBC"/>
                                         <constraint firstItem="XGz-aC-ala" firstAttribute="top" secondItem="V98-wq-j87" secondAttribute="bottom" constant="10" id="3gP-pb-CcJ"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="XGz-aC-ala" secondAttribute="bottom" constant="20" id="72F-iU-elS"/>
                                         <constraint firstItem="TV0-Ad-CeD" firstAttribute="top" secondItem="se1-Mk-cLG" secondAttribute="bottom" constant="10" id="PNb-Ea-0Mj"/>
                                         <constraint firstItem="V98-wq-j87" firstAttribute="top" secondItem="TV0-Ad-CeD" secondAttribute="bottom" constant="10" id="SHJ-yw-fco"/>
                                         <constraint firstItem="917-nu-1B8" firstAttribute="leading" secondItem="V98-wq-j87" secondAttribute="trailing" id="Wzi-aR-IZ3"/>
                                         <constraint firstItem="2Qc-5H-8Gv" firstAttribute="leading" secondItem="se1-Mk-cLG" secondAttribute="trailing" constant="10" id="cXY-XL-OSK"/>
+                                        <constraint firstItem="5CW-Dt-Kp4" firstAttribute="centerX" secondItem="YJn-H1-FbF" secondAttribute="centerX" id="cdf-kh-ssb"/>
                                         <constraint firstItem="2Qc-5H-8Gv" firstAttribute="baseline" secondItem="se1-Mk-cLG" secondAttribute="baseline" id="dPN-b8-8Oe"/>
                                         <constraint firstItem="V98-wq-j87" firstAttribute="centerX" secondItem="YJn-H1-FbF" secondAttribute="centerX" id="gQP-1p-wVx"/>
                                         <constraint firstItem="se1-Mk-cLG" firstAttribute="top" secondItem="YJn-H1-FbF" secondAttribute="topMargin" constant="40" id="jSw-8L-j1Q"/>
@@ -90,6 +96,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="locationLabel" destination="se1-Mk-cLG" id="oiL-7b-CAk"/>
+                                    <outlet property="pageControl" destination="5CW-Dt-Kp4" id="f0k-Gw-7cM"/>
                                     <outlet property="summaryLabel" destination="XGz-aC-ala" id="r1N-eI-3Nh"/>
                                     <outlet property="temperatureLabel" destination="V98-wq-j87" id="CDf-Vn-nLL"/>
                                     <outlet property="weatherImage" destination="TV0-Ad-CeD" id="eIO-EJ-LjE"/>

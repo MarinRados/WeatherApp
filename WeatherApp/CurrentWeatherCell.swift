@@ -14,4 +14,5 @@ class CurrentWeatherCell: UITableViewCell {
     @IBOutlet weak var weatherImage: UIImageView!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var summaryLabel: UILabel!
+    @IBOutlet weak var pageControl: UIPageControl!
 }
