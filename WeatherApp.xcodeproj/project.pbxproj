@@ -30,6 +30,7 @@
 		EA802DEA1E8935CE006D7805 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DE91E8935CE006D7805 /* LocationCell.swift */; };
 		EA802DED1E8A4F5E006D7805 /* LocationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DEC1E8A4F5E006D7805 /* LocationDelegate.swift */; };
 		EA802DF21E8A9AF9006D7805 /* ChangeLocationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DF11E8A9AF9006D7805 /* ChangeLocationDelegate.swift */; };
+		EADE01571E9260F7007CB826 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADE01561E9260F7007CB826 /* LocationService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		EA802DE91E8935CE006D7805 /* LocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 		EA802DEC1E8A4F5E006D7805 /* LocationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationDelegate.swift; sourceTree = "<group>"; };
 		EA802DF11E8A9AF9006D7805 /* ChangeLocationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeLocationDelegate.swift; sourceTree = "<group>"; };
+		EADE01561E9260F7007CB826 /* LocationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				EA802DF01E8A5C3C006D7805 /* Errors */,
 				EA802DDE1E8549E9006D7805 /* Extensions */,
 				EA802DD91E83C8F7006D7805 /* Models */,
+				EADE01551E9260D5007CB826 /* Services */,
 				EA802DEB1E8A4F1B006D7805 /* Protocols */,
 				EA802DB31E7FCAB5006D7805 /* Assets.xcassets */,
 				EA802DB51E7FCAB5006D7805 /* LaunchScreen.storyboard */,
@@ -156,6 +159,14 @@
 				EA802DCC1E801C3E006D7805 /* ForecastError.swift */,
 			);
 			name = Errors;
+			sourceTree = "<group>";
+		};
+		EADE01551E9260D5007CB826 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				EADE01561E9260F7007CB826 /* LocationService.swift */,
+			);
+			name = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -238,6 +249,7 @@
 				EA802DC51E7FFD21006D7805 /* AdditionalInfoCell.swift in Sources */,
 				EA802DE81E892F46006D7805 /* Location.swift in Sources */,
 				EA802DEA1E8935CE006D7805 /* LocationCell.swift in Sources */,
+				EADE01571E9260F7007CB826 /* LocationService.swift in Sources */,
 				EA802DCF1E8117D7006D7805 /* APIClient.swift in Sources */,
 				EA802DBF1E7FD31F006D7805 /* WeatherViewController.swift in Sources */,
 				EA802DE01E8549F9006D7805 /* Date+Extensions.swift in Sources */,

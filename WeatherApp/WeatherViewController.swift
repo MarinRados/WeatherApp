@@ -17,6 +17,8 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
     var forecastData: [SevenDayForecastPresentable]? = nil
     var currentLocation: Location?
     let locationManager = CLLocationManager()
+    let defaults = UserDefaults.standard
+    let lastLocationKey = "lastLocation"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,11 +59,22 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .notDetermined:
+            LocationService.isAuthorized = false
             locationManager.requestWhenInUseAuthorization()
         case .authorizedWhenInUse:
+            LocationService.isAuthorized = true
+            defaults.removeObject(forKey: lastLocationKey)
             locationManager.startUpdatingLocation()
         case .denied:
-            showAlertForDeniedAuthorization()
+            LocationService.isAuthorized = false
+            
+            guard let lastLocation = defaults.object(forKey: lastLocationKey) else {
+                showAlertForDeniedAuthorization()
+                return
+            }
+            currentLocation = convertToArrayFrom(lastLocation as! [String : Any])
+            refreshWeather()
+            showAlertForCurrentLocationEnabling()
         default:
             break
         }
@@ -78,12 +91,10 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
             placeMark = placemarks?[0]
             
             guard let city = placeMark?.addressDictionary?["City"] as? String else {
-                print("No city")
                 return
             }
             
             guard let country = placeMark?.addressDictionary?["Country"] as? String  else {
-                print("No country")
                 return
             }
             
@@ -116,6 +127,27 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
     
     func showAlertForDeniedAuthorization() {
         let alertController = UIAlertController (title: nil, message: "Application authorization disabled. To re-enable go to settings.", preferredStyle: .alert)
+        
+        let settingsAction = UIAlertAction(title: "Go to settings", style: .default) { (_) -> Void in
+            guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+                return
+            }
+            
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, options: [:], completionHandler: nil)
+            }
+        }
+        alertController.addAction(settingsAction)
+        let manualAction = UIAlertAction(title: "Add location manually", style: .default) { (_) -> Void in
+            self.performSegue(withIdentifier: "Location", sender: nil)
+        }
+        alertController.addAction(manualAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func showAlertForCurrentLocationEnabling() {
+        let alertController = UIAlertController (title: nil, message: "To see the weather on your current location go to settings and enable the location tracking.", preferredStyle: .alert)
         
         let settingsAction = UIAlertAction(title: "Go to settings", style: .default) { (_) -> Void in
             guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
@@ -211,8 +243,37 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
         }
     }
     
+    func convertToDictionaryFrom(_ location: Location) -> [String: Any] {
+        let dictionary: [String: Any] = [
+            "city": location.city,
+            "country": location.country,
+            "coordinate": [
+                "latitude": location.coordinate.latitude,
+                "longitude": location.coordinate.longitude
+            ]
+        ]
+        return dictionary
+    }
+    
+    func convertToArrayFrom(_ dictionary: [String: Any]) -> Location? {
+        guard let city = dictionary["city"] as? String,
+            let country = dictionary["country"] as? String,
+            let coordinate = dictionary["coordinate"] as? [String: Any],
+            let latitude = coordinate["latitude"] as? Double,
+            let longitude = coordinate["longitude"] as? Double else { return nil }
+        
+        guard let location = Location(city: city, country: country, coordinate: Coordinate(latitude: latitude, longitude: longitude)) else { return nil }
+        
+        return location
+    }
+
     func changeLocation(_ location: Location) {
+        locationManager.stopUpdatingLocation()
         currentLocation = location
+        if !LocationService.isAuthorized {
+            let lastLocationDictionary = convertToDictionaryFrom(location)
+            defaults.set(lastLocationDictionary, forKey: lastLocationKey)
+        }
         guard let coordinate = currentLocation?.coordinate else {
             return
         }

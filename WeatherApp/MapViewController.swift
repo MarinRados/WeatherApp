@@ -22,15 +22,15 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         
         mapView.mapType = .standard
         mapView.delegate = self
-        guard let centerLocation = currentLocation else {
-            return
-        }
-        getMapCenterFrom(currentLocation: centerLocation)
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(MapViewController.getLocationWith(gesture:)))
         gestureRecognizer.minimumPressDuration = 1.0
         gestureRecognizer.delaysTouchesBegan = true
         gestureRecognizer.delegate = self
         self.mapView.addGestureRecognizer(gestureRecognizer)
+        guard let centerLocation = currentLocation else {
+            return
+        }
+        getMapCenterFrom(currentLocation: centerLocation)
     }
     
     func getMapCenterFrom(currentLocation: Location) {

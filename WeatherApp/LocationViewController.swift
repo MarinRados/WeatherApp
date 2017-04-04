@@ -33,7 +33,20 @@ class LocationViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @IBAction func cancelModalView(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+        if locations.isEmpty && !LocationService.isAuthorized {
+            showAlertWith(message: "You have to enable current location tracking or add at least one location manually to use this app.")
+        } else if currentLocation == nil {
+            showAlertWith(message: "Please select one of your added locations to see the weather.")
+        } else {
+            dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    func showAlertWith(message: String) {
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(action)
+        present(alertController, animated: true, completion: nil)
     }
     
     func convertToDictionaryFrom(_ array: [Location]) -> [[String: Any]] {
