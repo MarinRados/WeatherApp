@@ -11,6 +11,7 @@ import Foundation
 protocol ChangeLocationDelegate {
     
     func changeLocation(_ location: Location, atIndex index: Int)
+    func changeAllLocations(_ locations: [Location])
 }
 
 

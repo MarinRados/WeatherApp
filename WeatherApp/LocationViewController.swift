@@ -18,31 +18,20 @@ class LocationViewController: UIViewController, UITableViewDelegate, UITableView
     var currentLocation: Location?
     let locationsKey = "locations"
     
-    let defaults = UserDefaults.standard
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         locationTableView.delegate = self
         locationTableView.dataSource = self
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        guard let newLocations = defaults.object(forKey: locationsKey) else {
-            return
-        }
-        locations = convertToArrayFrom(newLocations as! [[String : Any]])
-    }
-    
     @IBAction func cancelModalView(_ sender: UIBarButtonItem) {
         if locations.isEmpty && !LocationService.isAuthorized {
             showAlertWith(message: "You have to enable current location tracking or add at least one location manually to use this app.")
-        } else if currentLocation == nil {
+        } else if trackedLocation == nil {
             showAlertWith(message: "Please select one of your added locations to see the weather.")
         } else {
-            if let firstLocation = trackedLocation {
-                locations.insert(firstLocation, at: 0)
-                locationsDictionary = convertToDictionaryFrom(locations)
-                defaults.set(locationsDictionary, forKey: locationsKey)
+            if let delegate = self.changeLocationDelegate {
+                delegate.changeAllLocations(locations)
             }
             dismiss(animated: true, completion: nil)
         }
@@ -53,38 +42,6 @@ class LocationViewController: UIViewController, UITableViewDelegate, UITableView
         let action = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(action)
         present(alertController, animated: true, completion: nil)
-    }
-    
-    func convertToDictionaryFrom(_ array: [Location]) -> [[String: Any]] {
-        var convertedDictionary = [[String: Any]]()
-        for data in array {
-            let dictionary: [String: Any] = [
-                "city": data.city,
-                "country": data.country,
-                "coordinate": [
-                    "latitude": data.coordinate.latitude,
-                    "longitude": data.coordinate.longitude
-                ]
-            ]
-            convertedDictionary.append(dictionary)
-        }
-        return convertedDictionary
-    }
-    
-    func convertToArrayFrom(_ dictionary: [[String: Any]]) -> [Location] {
-        var convertedLocations = [Location]()
-        for dict in dictionary {
-            guard let city = dict["city"] as? String,
-                let country = dict["country"] as? String,
-                let coordinate = dict["coordinate"] as? [String: Any],
-                let latitude = coordinate["latitude"] as? Double,
-                let longitude = coordinate["longitude"] as? Double else { return [] }
-            
-            if let location = Location(city: city, country: country, coordinate: Coordinate(latitude: latitude, longitude: longitude)) {
-                convertedLocations.append(location)
-            }
-        }
-        return convertedLocations
     }
 }
 
@@ -104,6 +61,12 @@ extension LocationViewController {
         
         let index = indexPath.row
         
+        if index == 0 && trackedLocation != nil {
+            cell.isHidden = true
+        } else {
+            cell.isHidden = false
+        }
+        
         cell.cityLabel.text = locations[index].city
         cell.countryLabel.text = locations[index].country
         cell.selectionStyle = .none
@@ -111,15 +74,21 @@ extension LocationViewController {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let index = indexPath.row
+        
+        if index == 0 && trackedLocation != nil {
+            return 0
+        } else {
+            return 60
+        }
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let index = indexPath.row
         let newLocation = locations[index]
-        if let firstLocation = trackedLocation {
-            locations.insert(firstLocation, at: 0)
-            locationsDictionary = convertToDictionaryFrom(locations)
-            defaults.set(locationsDictionary, forKey: locationsKey)
-        }
         if let delegate = self.changeLocationDelegate {
+            delegate.changeAllLocations(locations)
             delegate.changeLocation(newLocation, atIndex: index)
         }
         dismiss(animated: true, completion: nil)
@@ -129,9 +98,6 @@ extension LocationViewController {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             locations.remove(at: indexPath.row)
-            defaults.removeObject(forKey: locationsKey)
-            locationsDictionary = convertToDictionaryFrom(locations)
-            defaults.set(locationsDictionary, forKey: locationsKey)
             tableView.deleteRows(at: [indexPath], with: .none)
             locationTableView.reloadData()
         }
@@ -147,8 +113,6 @@ extension LocationViewController {
     
     func addLocation(_ location: Location) {
         locations.append(location)
-        locationsDictionary = convertToDictionaryFrom(locations)
-        defaults.set(locationsDictionary, forKey: locationsKey)
         locationTableView.reloadData()
     }
 }

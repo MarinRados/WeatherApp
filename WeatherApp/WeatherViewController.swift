@@ -22,29 +22,21 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
     let lastLocationKey = "lastLocation"
     let locationsKey = "locations"
     var pagerIndex = 0
-    var numberOfSavedLocations: Int = 0
-    
-    override func viewWillAppear(_ animated: Bool) {
-        guard let newLocations = defaults.object(forKey: locationsKey) else {
-            return
-        }
-        allLocations = convertToArrayFrom(newLocations as! [[String : Any]])
-        print("na ulaz \(allLocations)")
-        numberOfSavedLocations = allLocations.count
-    }
     
     override func viewWillDisappear(_ animated: Bool) {
-        if LocationService.isAuthorized {
-            print("before \(allLocations)")
+        if trackedLocation != nil {
             allLocations.remove(at: 0)
-            let locationsDictionary = convertToDictionaryArrayFrom(allLocations)
-            print("after \(allLocations)")
-            defaults.set(locationsDictionary, forKey: locationsKey)
         }
+        let dictionary = convertToDictionaryArrayFrom(allLocations)
+        defaults.set(dictionary, forKey: locationsKey)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let newLocations = defaults.object(forKey: locationsKey) {
+           allLocations = convertToArrayFrom(newLocations as! [[String : Any]])
+        }
         
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
         swipeRight.direction = UISwipeGestureRecognizerDirection.right
@@ -188,25 +180,12 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
             
             let newLocation = Location(city: city, country: country, coordinate: newCoordinate)
             self.trackedLocation = newLocation
-            if self.numberOfSavedLocations < self.allLocations.count {
-                if let firstLocation = self.trackedLocation {
-                    self.allLocations[0] = firstLocation
-                    for location in self.allLocations {
-                        if self.currentLocation == location {
-                            return
-                        }
-                    }
-                    if self.currentLocation != self.trackedLocation {
-                        self.currentLocation = self.trackedLocation
-                        self.refreshWeather()
-                    }
-                }
-            } else {
-                if let firstLocation = self.trackedLocation {
-                    self.allLocations.insert(firstLocation, at: 0)
-                    self.currentLocation = self.allLocations[0]
-                    self.refreshWeather()
-                }
+            if let firstLocation = self.trackedLocation {
+                self.allLocations.insert(firstLocation, at: 0)
+            }
+            if self.currentLocation != self.trackedLocation {
+                self.currentLocation = self.trackedLocation
+                self.refreshWeather()
             }
         })
     }
@@ -348,7 +327,7 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
         if let locationViewController = destinationViewController as? LocationViewController {
             locationViewController.changeLocationDelegate = self
             locationViewController.trackedLocation = trackedLocation
-            locationViewController.currentLocation = currentLocation
+            locationViewController.locations = allLocations
         }
     }
     
@@ -410,11 +389,11 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
 
     func changeLocation(_ location: Location, atIndex index: Int) {
         currentLocation = location
-        pagerIndex = index + 1
-        if !LocationService.isAuthorized {
-            let lastLocationDictionary = convertToDictionaryFrom(location)
-            defaults.set(lastLocationDictionary, forKey: lastLocationKey)
-        }
+        pagerIndex = index
         refreshWeather()
+    }
+    
+    func changeAllLocations(_ locations: [Location]) {
+        allLocations = locations
     }
 }
