@@ -29,7 +29,18 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
             return
         }
         allLocations = convertToArrayFrom(newLocations as! [[String : Any]])
+        print("na ulaz \(allLocations)")
         numberOfSavedLocations = allLocations.count
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if LocationService.isAuthorized {
+            print("before \(allLocations)")
+            allLocations.remove(at: 0)
+            let locationsDictionary = convertToDictionaryArrayFrom(allLocations)
+            print("after \(allLocations)")
+            defaults.set(locationsDictionary, forKey: locationsKey)
+        }
     }
     
     override func viewDidLoad() {
@@ -351,6 +362,22 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
             ]
         ]
         return dictionary
+    }
+    
+    func convertToDictionaryArrayFrom(_ array: [Location]) -> [[String: Any]] {
+        var convertedDictionary = [[String: Any]]()
+        for data in array {
+            let dictionary: [String: Any] = [
+                "city": data.city,
+                "country": data.country,
+                "coordinate": [
+                    "latitude": data.coordinate.latitude,
+                    "longitude": data.coordinate.longitude
+                ]
+            ]
+            convertedDictionary.append(dictionary)
+        }
+        return convertedDictionary
     }
     
     func convertToLocationFrom(_ dictionary: [String: Any]) -> Location? {

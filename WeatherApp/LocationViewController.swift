@@ -31,9 +31,6 @@ class LocationViewController: UIViewController, UITableViewDelegate, UITableView
             return
         }
         locations = convertToArrayFrom(newLocations as! [[String : Any]])
-        if locations[0] == trackedLocation {
-            locations.remove(at: 0)
-        }
     }
     
     @IBAction func cancelModalView(_ sender: UIBarButtonItem) {
