@@ -145,14 +145,15 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
             locationManager.startUpdatingLocation()
         case .denied:
             LocationService.isAuthorized = false
-            
-            guard let lastLocation = defaults.object(forKey: lastLocationKey) else {
-                showAlertForDeniedAuthorization()
-                return
+            if let newLocations = defaults.object(forKey: locationsKey) {
+                showAlertForCurrentLocationEnabling()
+                allLocations = convertToArrayFrom(newLocations as! [[String : Any]])
+                if !allLocations.isEmpty {
+                    currentLocation = allLocations[0]
+                }
             }
-            currentLocation = convertToLocationFrom(lastLocation as! [String : Any])
             refreshWeather()
-            showAlertForCurrentLocationEnabling()
+            showAlertForDeniedAuthorization()
         default:
             break
         }
@@ -179,11 +180,26 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
             let newCoordinate = Coordinate(latitude: userLocation.coordinate.latitude, longitude: userLocation.coordinate.longitude)
             
             let newLocation = Location(city: city, country: country, coordinate: newCoordinate)
-            self.trackedLocation = newLocation
-            if let firstLocation = self.trackedLocation {
-                self.allLocations.insert(firstLocation, at: 0)
+            if self.trackedLocation != nil {
+                self.trackedLocation = newLocation
+                if let firstLocation = self.trackedLocation {
+                    if !self.allLocations.isEmpty {
+                        self.allLocations[0] = firstLocation
+                    }
+                }
+            } else {
+                self.trackedLocation = newLocation
+                if let firstLocation = self.trackedLocation {
+                    self.allLocations.insert(firstLocation, at: 0)
+                }
             }
+            
             if self.currentLocation != self.trackedLocation {
+                for location in self.allLocations {
+                    if self.currentLocation == location {
+                        return
+                    }
+                }
                 self.currentLocation = self.trackedLocation
                 self.refreshWeather()
             }
@@ -390,6 +406,10 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
     func changeLocation(_ location: Location, atIndex index: Int) {
         currentLocation = location
         pagerIndex = index
+        if !LocationService.isAuthorized {
+            let lastLocationDictionary = convertToDictionaryFrom(location)
+            defaults.set(lastLocationDictionary, forKey: lastLocationKey)
+        }
         refreshWeather()
     }
     
