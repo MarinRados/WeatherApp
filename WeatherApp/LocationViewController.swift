@@ -62,9 +62,7 @@ extension LocationViewController {
         let index = indexPath.row
         
         if index == 0 && trackedLocation != nil {
-            cell.isHidden = true
-        } else {
-            cell.isHidden = false
+            cell.backgroundColor = UIColor.gray
         }
         
         cell.cityLabel.text = locations[index].city
@@ -78,7 +76,7 @@ extension LocationViewController {
         let index = indexPath.row
         
         if index == 0 && trackedLocation != nil {
-            return 0
+            return 0.5
         } else {
             return 60
         }
