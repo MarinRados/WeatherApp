@@ -111,9 +111,19 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
             return
         }
         
+        let screenSize = UIScreen.main.bounds
+        let viewPosition = CGPoint(x: tableView.frame.origin.x + screenSize.width, y: tableView.frame.origin.y)
+        
+        UIView.animate(withDuration: 1) {
+            self.tableView.frame = CGRect(x: viewPosition.x, y: viewPosition.y, width: self.tableView.frame.size.width, height: self.tableView.frame.size.height)
+        }
+        
         currentLocation = allLocations[previousIndex]
         pagerIndex = previousIndex
         refreshWeather()
+        
+        self.tableView.frame = CGRect(x: viewPosition.x - screenSize.width, y: viewPosition.y, width: self.tableView.frame.size.width, height: self.tableView.frame.size.height)
+        
     }
     
     func onSwipeLeftFrom(index: Int) {
@@ -129,9 +139,18 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
             return
         }
         
+        let screenSize = UIScreen.main.bounds
+        let viewPosition = CGPoint(x: tableView.frame.origin.x - screenSize.width, y: tableView.frame.origin.y)
+        
+        UIView.animate(withDuration: 1) {
+            self.tableView.frame = CGRect(x: viewPosition.x, y: viewPosition.y, width: self.tableView.frame.size.width, height: self.tableView.frame.size.height)
+        }
+        
         currentLocation = allLocations[nextIndex]
         pagerIndex = nextIndex
         refreshWeather()
+        
+        self.tableView.frame = CGRect(x: viewPosition.x + screenSize.width, y: viewPosition.y, width: self.tableView.frame.size.width, height: self.tableView.frame.size.height)
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
