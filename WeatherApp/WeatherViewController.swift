@@ -25,7 +25,8 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     let lastLocationKey = "lastLocation"
     let locationsKey = "locations"
     var pagerIndex = 0
-    var refreshControl: UIRefreshControl?
+    let refreshControl = UIRefreshControl()
+    
     
     override func viewWillDisappear(_ animated: Bool) {
         if trackedLocation != nil {
@@ -37,6 +38,8 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.refreshControl = refreshControl
         
         if let newLocations = defaults.object(forKey: locationsKey) {
            allLocations = convertToArrayFrom(newLocations as! [[String : Any]])
@@ -58,13 +61,13 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
         viewModel.onSuccess = { [weak self] data in
             self?.currentData = data
             self?.tableView.reloadData()
-            self?.refreshControl?.endRefreshing()
+            self?.tableView.refreshControl?.endRefreshing()
         }
         
         viewModel.onForecastSuccess = { [weak self] data in
             self?.forecastData = data
             self?.tableView.reloadData()
-            self?.refreshControl?.endRefreshing()
+            self?.tableView.refreshControl?.endRefreshing()
         }
         
         viewModel.onError = { [weak self] error in
@@ -76,10 +79,10 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
             case .jsonConversionFailure: self?.showAlertWith(message: "JSON conversion failed.")
             case .jsonParsingFailure: self?.showAlertWith(message: "JSON parsing failed.")
             }
-            self?.refreshControl?.endRefreshing()
+            self?.tableView.refreshControl?.endRefreshing()
         }
         
-        self.refreshControl?.addTarget(self, action: #selector(WeatherViewController.refreshWeather), for: UIControlEvents.valueChanged)
+        self.tableView.refreshControl?.addTarget(self, action: #selector(WeatherViewController.refreshWeather), for: UIControlEvents.valueChanged)
 
     }
     
@@ -124,7 +127,7 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         let time = DispatchTime.now() + 0.3
         
-        DispatchQueue.main.asyncAfter(deadline: time) { 
+        DispatchQueue.main.asyncAfter(deadline: time) {
             self.currentLocation = self.allLocations[previousIndex]
             self.pagerIndex = previousIndex
             self.refreshWeather()

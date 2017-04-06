@@ -29,7 +29,7 @@
                                 <color key="sectionIndexBackgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CurrentWeather" rowHeight="317" id="TOs-TB-tAN" customClass="CurrentWeatherCell" customModule="WeatherApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.5" width="375" height="317"/>
+                                        <rect key="frame" x="0.0" y="56" width="375" height="317"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TOs-TB-tAN" id="KB2-0v-N0p">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="317"/>
@@ -111,7 +111,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SevenDays" rowHeight="60" id="xo3-8R-RAd" customClass="SevenDayForecastCell" customModule="WeatherApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="372.5" width="375" height="60"/>
+                                        <rect key="frame" x="0.0" y="373" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xo3-8R-RAd" id="zv2-W3-uLz">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
@@ -166,7 +166,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AdditionalInfo" rowHeight="148" id="nGT-ag-7x8" customClass="AdditionalInfoCell" customModule="WeatherApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="432.5" width="375" height="148"/>
+                                        <rect key="frame" x="0.0" y="433" width="375" height="148"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nGT-ag-7x8" id="vgG-uC-ni1">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="148"/>
