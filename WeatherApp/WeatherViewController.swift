@@ -9,7 +9,10 @@
 import UIKit
 import CoreLocation
 
-class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLocationManagerDelegate {
+class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ChangeLocationDelegate, CLLocationManagerDelegate {
+    
+    
+    @IBOutlet var tableView: UITableView!
     
     var viewModel: WeatherViewModel!
     var currentData: CurrentWeatherPresentable? = nil
@@ -22,6 +25,7 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
     let lastLocationKey = "lastLocation"
     let locationsKey = "locations"
     var pagerIndex = 0
+    var refreshControl: UIRefreshControl?
     
     override func viewWillDisappear(_ animated: Bool) {
         if trackedLocation != nil {
@@ -112,17 +116,25 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
         }
         
         let screenSize = UIScreen.main.bounds
-        let viewPosition = CGPoint(x: tableView.frame.origin.x + screenSize.width, y: tableView.frame.origin.y)
+        let viewPosition = CGPoint(x: tableView.frame.origin.x, y: tableView.frame.origin.y)
         
-        UIView.animate(withDuration: 1) {
-            self.tableView.frame = CGRect(x: viewPosition.x, y: viewPosition.y, width: self.tableView.frame.size.width, height: self.tableView.frame.size.height)
+        UIView.animate(withDuration: 0.3) {
+            self.tableView.frame = CGRect(x: viewPosition.x + screenSize.width, y: viewPosition.y, width: self.tableView.frame.size.width, height: self.tableView.frame.size.height)
         }
         
-        currentLocation = allLocations[previousIndex]
-        pagerIndex = previousIndex
-        refreshWeather()
+        let time = DispatchTime.now() + 0.3
         
-        self.tableView.frame = CGRect(x: viewPosition.x - screenSize.width, y: viewPosition.y, width: self.tableView.frame.size.width, height: self.tableView.frame.size.height)
+        DispatchQueue.main.asyncAfter(deadline: time) { 
+            self.currentLocation = self.allLocations[previousIndex]
+            self.pagerIndex = previousIndex
+            self.refreshWeather()
+            
+            self.tableView.frame = CGRect(x: viewPosition.x - screenSize.width, y: viewPosition.y, width: self.tableView.frame.size.width, height: self.tableView.frame.size.height)
+            
+            UIView.animate(withDuration: 0.3) {
+                self.tableView.frame = CGRect(x: viewPosition.x, y: viewPosition.y, width: self.tableView.frame.size.width, height: self.tableView.frame.size.height)
+            }
+        }
         
     }
     
@@ -140,17 +152,25 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
         }
         
         let screenSize = UIScreen.main.bounds
-        let viewPosition = CGPoint(x: tableView.frame.origin.x - screenSize.width, y: tableView.frame.origin.y)
+        let viewPosition = CGPoint(x: tableView.frame.origin.x, y: tableView.frame.origin.y)
         
-        UIView.animate(withDuration: 1) {
-            self.tableView.frame = CGRect(x: viewPosition.x, y: viewPosition.y, width: self.tableView.frame.size.width, height: self.tableView.frame.size.height)
+        UIView.animate(withDuration: 0.3) {
+            self.tableView.frame = CGRect(x: viewPosition.x - screenSize.width, y: viewPosition.y, width: self.tableView.frame.size.width, height: self.tableView.frame.size.height)
         }
         
-        currentLocation = allLocations[nextIndex]
-        pagerIndex = nextIndex
-        refreshWeather()
+        let time = DispatchTime.now() + 0.3
         
-        self.tableView.frame = CGRect(x: viewPosition.x + screenSize.width, y: viewPosition.y, width: self.tableView.frame.size.width, height: self.tableView.frame.size.height)
+        DispatchQueue.main.asyncAfter(deadline: time) { 
+            self.currentLocation = self.allLocations[nextIndex]
+            self.pagerIndex = nextIndex
+            self.refreshWeather()
+            
+            self.tableView.frame = CGRect(x: viewPosition.x + screenSize.width, y: viewPosition.y, width: self.tableView.frame.size.width, height: self.tableView.frame.size.height)
+            
+            UIView.animate(withDuration: 0.3) {
+                self.tableView.frame = CGRect(x: viewPosition.x, y: viewPosition.y, width: self.tableView.frame.size.width, height: self.tableView.frame.size.height)
+            }
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -288,16 +308,16 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 7
     }
 
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SevenDays", for: indexPath) as! SevenDayForecastCell
         
         let index = indexPath.row + 1
@@ -311,7 +331,7 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         guard let currentLocation = currentLocation else {
             return nil
@@ -327,7 +347,7 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
         return headerCell
     }
     
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         
         let footerCell = tableView.dequeueReusableCell(withIdentifier: "AdditionalInfo") as! AdditionalInfoCell
         
@@ -342,15 +362,15 @@ class WeatherViewController: UITableViewController, ChangeLocationDelegate, CLLo
         return footerCell
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
     
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 300
     }
     
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 140
     }
     
