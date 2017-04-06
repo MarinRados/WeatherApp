@@ -260,7 +260,7 @@
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Location" textLabel="T0n-GD-VKJ" detailTextLabel="3e5-cG-YIW" style="IBUITableViewCellStyleSubtitle" id="ah6-s0-jZa" customClass="LocationCell" customModule="WeatherApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="56" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ah6-s0-jZa" id="gaU-ww-p5q">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -388,7 +388,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="rG5-4O-bhF" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="TTp-4R-2e0">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="TTp-4R-2e0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>

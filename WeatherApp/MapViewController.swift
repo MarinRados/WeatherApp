@@ -15,6 +15,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     var locationDelegate: LocationDelegate?
     var currentLocation: Location?
     let locationManager = CLLocationManager()
+    let autocompleteController = GMSAutocompleteViewController()
     
     @IBOutlet weak var mapView: MKMapView!
     
@@ -22,6 +23,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         super.viewDidLoad()
         
         GMSPlacesClient.provideAPIKey("AIzaSyCivVmBDmFzZkatUnlWxMw7ML79VPrt5ls")
+        autocompleteController.delegate = self
         
         mapView.mapType = .standard
         mapView.delegate = self
@@ -83,8 +85,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     }
     
     @IBAction func openAutocomplete(_ sender: Any) {
-        let autocompleteController = GMSAutocompleteViewController()
-        autocompleteController.delegate = self
         present(autocompleteController, animated: true, completion: nil)
     }
     
@@ -111,8 +111,7 @@ extension MapViewController {
         let parts = address.components(separatedBy: ", ")
         
         if parts.count < 2 {
-            showAlertWith(message: "Please provide a location with more information.")
-            return
+            autocompleteController.showAlertWith(message: "Please select a location with more information.")
         }
         
         guard let city = parts.first else {
@@ -151,7 +150,6 @@ extension MapViewController {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
 }
-
 
 
 

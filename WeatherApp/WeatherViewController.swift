@@ -457,5 +457,6 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func changeAllLocations(_ locations: [Location]) {
         allLocations = locations
+        tableView.reloadData()
     }
 }

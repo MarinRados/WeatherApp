@@ -97,6 +97,9 @@ extension LocationViewController {
         if editingStyle == .delete {
             locations.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .none)
+            if let delegate = self.changeLocationDelegate {
+                delegate.changeLocation(locations[0], atIndex: 0)
+            }
             locationTableView.reloadData()
         }
     }
