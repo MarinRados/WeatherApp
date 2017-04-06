@@ -8,8 +8,9 @@
 
 import UIKit
 import MapKit
+import GooglePlaces
 
-class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognizerDelegate, CLLocationManagerDelegate {
+class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognizerDelegate, CLLocationManagerDelegate, GMSAutocompleteViewControllerDelegate {
     
     var locationDelegate: LocationDelegate?
     var currentLocation: Location?
@@ -19,6 +20,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        GMSPlacesClient.provideAPIKey("AIzaSyCivVmBDmFzZkatUnlWxMw7ML79VPrt5ls")
         
         mapView.mapType = .standard
         mapView.delegate = self
@@ -79,6 +82,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         })
     }
     
+    @IBAction func openAutocomplete(_ sender: Any) {
+        let autocompleteController = GMSAutocompleteViewController()
+        autocompleteController.delegate = self
+        present(autocompleteController, animated: true, completion: nil)
+    }
+    
     func showAlertWith(message: String) {
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "OK", style: .default, handler: nil)
@@ -86,3 +95,77 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         present(alertController, animated: true, completion: nil)
     }
 }
+
+extension MapViewController {
+    
+    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+        print("Place name: \(place.name)")
+        print("Place address: \(place.formattedAddress ?? "")")
+        print("Place coordinate lat: \(place.coordinate.latitude)")
+        print("Place coordinate long: \(place.coordinate.longitude)")
+        
+        guard let address = place.formattedAddress else {
+            return
+        }
+        
+        let parts = address.components(separatedBy: ", ")
+        
+        if parts.count < 2 {
+            showAlertWith(message: "Please provide a location with more information.")
+            return
+        }
+        
+        guard let city = parts.first else {
+            return
+        }
+        
+        guard let country = parts.last else {
+            return
+        }
+        
+        let coordinate = Coordinate(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
+        
+        let location = Location(city: city, country: country, coordinate: coordinate)
+        
+        if let delegate = self.locationDelegate, let newLocation = location {
+            delegate.addLocation(newLocation)
+        }
+        
+        dismiss(animated: false, completion: nil)
+        _ = self.navigationController?.popViewController(animated: false)
+    }
+    
+    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+        print("Error: ", error.localizedDescription)
+    }
+    
+    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func didRequestAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+    }
+    
+    func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

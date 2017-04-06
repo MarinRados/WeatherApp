@@ -29,7 +29,7 @@
                                 <color key="sectionIndexBackgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CurrentWeather" rowHeight="317" id="TOs-TB-tAN" customClass="CurrentWeatherCell" customModule="WeatherApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="56" width="375" height="317"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="317"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TOs-TB-tAN" id="KB2-0v-N0p">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="317"/>
@@ -111,7 +111,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SevenDays" rowHeight="60" id="xo3-8R-RAd" customClass="SevenDayForecastCell" customModule="WeatherApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="373" width="375" height="60"/>
+                                        <rect key="frame" x="0.0" y="372.5" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xo3-8R-RAd" id="zv2-W3-uLz">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
@@ -166,7 +166,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AdditionalInfo" rowHeight="148" id="nGT-ag-7x8" customClass="AdditionalInfoCell" customModule="WeatherApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="433" width="375" height="148"/>
+                                        <rect key="frame" x="0.0" y="432.5" width="375" height="148"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nGT-ag-7x8" id="vgG-uC-ni1">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="148"/>
@@ -349,7 +349,14 @@
                             <constraint firstItem="jhe-4V-WQk" firstAttribute="leading" secondItem="aGZ-Si-KaM" secondAttribute="leading" id="bvG-lF-j7n"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="sJm-Xe-DPb"/>
+                    <navigationItem key="navigationItem" id="sJm-Xe-DPb">
+                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="DB7-2w-iGP">
+                            <color key="tintColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="openAutocomplete:" destination="S7R-R9-9MT" id="jPH-ee-5em"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="jhe-4V-WQk" id="QGA-bf-va8"/>
                     </connections>
@@ -358,12 +365,30 @@
             </objects>
             <point key="canvasLocation" x="3837.5999999999999" y="87.706146926536732"/>
         </scene>
+        <!--Search View Controller-->
+        <scene sceneID="csI-Gm-VPr">
+            <objects>
+                <viewController id="9hZ-uh-ZX3" customClass="SearchViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="rFy-5G-3IV"/>
+                        <viewControllerLayoutGuide type="bottom" id="DQs-Sg-n3e"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="M8S-fc-i4J">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DE7-yv-Xgw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4671" y="88"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="ncx-yQ-jST">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="rG5-4O-bhF" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="TTp-4R-2e0">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="TTp-4R-2e0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
