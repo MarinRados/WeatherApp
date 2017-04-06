@@ -33,7 +33,6 @@
 		EA802DF21E8A9AF9006D7805 /* ChangeLocationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA802DF11E8A9AF9006D7805 /* ChangeLocationDelegate.swift */; };
 		EADE01571E9260F7007CB826 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADE01561E9260F7007CB826 /* LocationService.swift */; };
 		EADE015D1E966425007CB826 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = EADE015C1E966425007CB826 /* Podfile */; };
-		EADE015F1E96795C007CB826 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADE015E1E96795C007CB826 /* SearchViewController.swift */; };
 		EADE01611E968781007CB826 /* GMSAutocompleteViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADE01601E968781007CB826 /* GMSAutocompleteViewController+Extensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -68,7 +67,6 @@
 		EA802DF11E8A9AF9006D7805 /* ChangeLocationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeLocationDelegate.swift; sourceTree = "<group>"; };
 		EADE01561E9260F7007CB826 /* LocationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		EADE015C1E966425007CB826 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
-		EADE015E1E96795C007CB826 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		EADE01601E968781007CB826 /* GMSAutocompleteViewController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GMSAutocompleteViewController+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -120,7 +118,6 @@
 				EA802DBE1E7FD31F006D7805 /* WeatherViewController.swift */,
 				EA802DE31E891907006D7805 /* LocationViewController.swift */,
 				EA802DE51E891922006D7805 /* MapViewController.swift */,
-				EADE015E1E96795C007CB826 /* SearchViewController.swift */,
 				EA802DD41E82B06B006D7805 /* WeatherViewModel.swift */,
 				EA802DCA1E8019A7006D7805 /* JSONDownloader.swift */,
 				EA802DCE1E8117D7006D7805 /* APIClient.swift */,
@@ -340,7 +337,6 @@
 				EA802DBF1E7FD31F006D7805 /* WeatherViewController.swift in Sources */,
 				EA802DE01E8549F9006D7805 /* Date+Extensions.swift in Sources */,
 				EA802DCD1E801C3E006D7805 /* ForecastError.swift in Sources */,
-				EADE015F1E96795C007CB826 /* SearchViewController.swift in Sources */,
 				EA802DED1E8A4F5E006D7805 /* LocationDelegate.swift in Sources */,
 				EA802DF21E8A9AF9006D7805 /* ChangeLocationDelegate.swift in Sources */,
 				EA802DC11E7FDB09006D7805 /* CurrentWeatherCell.swift in Sources */,

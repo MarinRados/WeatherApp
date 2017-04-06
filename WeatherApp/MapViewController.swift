@@ -112,6 +112,7 @@ extension MapViewController {
         
         if parts.count < 2 {
             autocompleteController.showAlertWith(message: "Please select a location with more information.")
+            return
         }
         
         guard let city = parts.first else {
