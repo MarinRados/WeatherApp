@@ -12,10 +12,10 @@ import GooglePlaces
 
 class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognizerDelegate, CLLocationManagerDelegate, GMSAutocompleteViewControllerDelegate {
     
-    var locationDelegate: LocationDelegate?
     var currentLocation: Location?
     let locationManager = CLLocationManager()
     let autocompleteController = GMSAutocompleteViewController()
+    let locationService = LocationService()
     
     @IBOutlet weak var mapView: MKMapView!
     
@@ -74,10 +74,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
             }
             
             let coordinate = Coordinate(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude)
-            let location = Location(city: city, country: country, coordinate: coordinate)
-            
-            if let delegate = self.locationDelegate, let newLocation = location {
-                delegate.addLocation(newLocation)
+            if let location = Location(city: city, country: country, coordinate: coordinate) {
+                self.locationService.addLocation(location)
             }
             
             _ = self.navigationController?.popViewController(animated: true)
@@ -98,7 +96,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
 
 extension MapViewController {
     
-    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace)
+    {
         print("Place name: \(place.name)")
         print("Place address: \(place.formattedAddress ?? "")")
         print("Place coordinate lat: \(place.coordinate.latitude)")
@@ -125,10 +124,8 @@ extension MapViewController {
         
         let coordinate = Coordinate(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
         
-        let location = Location(city: city, country: country, coordinate: coordinate)
-        
-        if let delegate = self.locationDelegate, let newLocation = location {
-            delegate.addLocation(newLocation)
+        if let location = Location(city: city, country: country, coordinate: coordinate) {
+            locationService.addLocation(location)
         }
         
         dismiss(animated: false, completion: nil)

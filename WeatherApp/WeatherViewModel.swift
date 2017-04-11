@@ -17,7 +17,6 @@ class WeatherViewModel {
     var onError: ((ForecastError)->Void)?
     
     
-    
     func getWeather(coordinates: Coordinate) {
         client.getCurrentWeather(at: coordinates) { [weak self] (currentWeather, error) in
             if let currentWeather = currentWeather {

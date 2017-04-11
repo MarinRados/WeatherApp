@@ -8,20 +8,26 @@
 
 import UIKit
 
-class LocationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, LocationDelegate {
+class LocationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var locationTableView: UITableView!
-    var changeLocationDelegate: ChangeLocationDelegate?
     var locations = [Location]()
     var locationsDictionary = [[String: Any]]()
     var trackedLocation: Location?
     var currentLocation: Location?
     let locationsKey = "locations"
+    let pageViewController = WeatherPageViewController()
+    let locationService = LocationService()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         locationTableView.delegate = self
         locationTableView.dataSource = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        locations = locationService.getSavedLocations()
+        locationTableView.reloadData()
     }
     
     @IBAction func cancelModalView(_ sender: UIBarButtonItem) {
@@ -30,9 +36,7 @@ class LocationViewController: UIViewController, UITableViewDelegate, UITableView
         } else if trackedLocation == nil {
             showAlertWith(message: "Please select one of your added locations to see the weather.")
         } else {
-            if let delegate = self.changeLocationDelegate {
-                delegate.changeAllLocations(locations)
-            }
+            locationService.saveLocations(locations)
             dismiss(animated: true, completion: nil)
         }
     }
@@ -61,10 +65,6 @@ extension LocationViewController {
         
         let index = indexPath.row
         
-        if index == 0 && trackedLocation != nil {
-            cell.backgroundColor = UIColor.gray
-        }
-        
         cell.cityLabel.text = locations[index].city
         cell.countryLabel.text = locations[index].country
         cell.selectionStyle = .none
@@ -72,34 +72,15 @@ extension LocationViewController {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let index = indexPath.row
-        
-        if index == 0 && trackedLocation != nil {
-            return 0.5
-        } else {
-            return 60
-        }
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let index = indexPath.row
-        let newLocation = locations[index]
-        if let delegate = self.changeLocationDelegate {
-            delegate.changeAllLocations(locations)
-            delegate.changeLocation(newLocation, atIndex: index)
-        }
+        locationService.saveLocations(locations)
         dismiss(animated: true, completion: nil)
-
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             locations.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .none)
-            if let delegate = self.changeLocationDelegate {
-                delegate.changeLocation(locations[0], atIndex: 0)
-            }
             locationTableView.reloadData()
         }
     }
@@ -107,14 +88,8 @@ extension LocationViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "Map" {
             let destinationViewController = segue.destination as! MapViewController
-            destinationViewController.locationDelegate = self
             destinationViewController.currentLocation = trackedLocation
         }
-    }
-    
-    func addLocation(_ location: Location) {
-        locations.append(location)
-        locationTableView.reloadData()
     }
 }
 
