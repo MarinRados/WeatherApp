@@ -20,10 +20,15 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     var trackedLocation: Location?
     var allLocations = [Location]()
     let defaults = UserDefaults.standard
+    let locationService = LocationService()
     let lastLocationKey = "lastLocation"
     let locationsKey = "locations"
-    var pagerIndex = 0
+    var pagerIndex: Int?
     let refreshControl = UIRefreshControl()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        allLocations = locationService.getSavedLocations()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,7 +124,9 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
         headerCell.weatherImage.image = currentData?.icon
         headerCell.summaryLabel.text = currentData?.summary
         headerCell.pageControl.numberOfPages = allLocations.count
-        headerCell.pageControl.currentPage = pagerIndex
+        if let index = pagerIndex {
+            headerCell.pageControl.currentPage = index
+        }
         return headerCell
     }
     

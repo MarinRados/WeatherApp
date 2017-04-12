@@ -38,10 +38,14 @@ class WeatherPageViewController: UIPageViewController, UIPageViewControllerDataS
         locations = locationService.getSavedLocations()
         weatherViewControllers = []
         
+        var index = 0
+        
         for location in locations {
             let newViewController = createWeatherViewController()
             newViewController.currentLocation = location
+            newViewController.pagerIndex = index
             weatherViewControllers.append(newViewController)
+            index = index + 1
         }
         
         if let firstViewController = weatherViewControllers.first {
