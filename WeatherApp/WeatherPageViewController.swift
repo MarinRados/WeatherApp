@@ -31,6 +31,10 @@ class WeatherPageViewController: UIPageViewController, UIPageViewControllerDataS
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        if LocationService.isAuthorized {
+            locationManager.startUpdatingLocation()
+        }
+        
         locations = locationService.getSavedLocations()
         weatherViewControllers = []
         
@@ -67,7 +71,11 @@ class WeatherPageViewController: UIPageViewController, UIPageViewControllerDataS
             locationManager.startUpdatingLocation()
         case .denied:
             LocationService.isAuthorized = false
-            showAlertForDeniedAuthorization()
+            if locations.isEmpty {
+                showAlertForDeniedAuthorization()
+            } else {
+                showAlertForCurrentLocationEnabling()
+            }
         default:
             break
         }
@@ -94,7 +102,7 @@ class WeatherPageViewController: UIPageViewController, UIPageViewControllerDataS
             let newCoordinate = Coordinate(latitude: userLocation.coordinate.latitude, longitude: userLocation.coordinate.longitude)
             
             let newLocation = Location(city: city, country: country, coordinate: newCoordinate)
-            if self.trackedLocation == nil {
+            if self.locations.isEmpty {
                 guard let newTrackedLocation = newLocation else {
                     return
                 }
@@ -107,13 +115,19 @@ class WeatherPageViewController: UIPageViewController, UIPageViewControllerDataS
                 if let firstViewController = self.weatherViewControllers.first {
                     self.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
                 }
+            } else if self.weatherViewControllers.first?.currentLocation == newLocation {
+                return
             } else {
                 guard let newTrackedLocation = newLocation else {
                     return
                 }
                 self.trackedLocation = newLocation
                 self.weatherViewControllers.first?.currentLocation = self.trackedLocation
-                self.locations[0] = newTrackedLocation
+                if !locations.isEmpty {
+                    self.locations[0] = newTrackedLocation
+                }
+                
+                self.weatherViewControllers.first?.refreshWeather()
                 
                 if let firstViewController = self.weatherViewControllers.first {
                     self.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
@@ -135,10 +149,35 @@ class WeatherPageViewController: UIPageViewController, UIPageViewControllerDataS
             }
         }
         alertController.addAction(settingsAction)
+        
         let manualAction = UIAlertAction(title: "Add location manually", style: .default) { (_) -> Void in
-            self.performSegue(withIdentifier: "Location", sender: nil)
+            if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LocationViewController") as? LocationViewController
+            {
+                let navigationController = UINavigationController()
+                navigationController.viewControllers = [vc]
+                self.present(navigationController, animated: true)
+            }
         }
         alertController.addAction(manualAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func showAlertForCurrentLocationEnabling() {
+        let alertController = UIAlertController (title: nil, message: "To see the weather on your current location go to settings and enable the location tracking.", preferredStyle: .alert)
+        
+        let settingsAction = UIAlertAction(title: "Go to settings", style: .default) { (_) -> Void in
+            guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+                return
+            }
+            
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, options: [:], completionHandler: nil)
+            }
+        }
+        alertController.addAction(settingsAction)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+        alertController.addAction(cancelAction)
         
         present(alertController, animated: true, completion: nil)
     }

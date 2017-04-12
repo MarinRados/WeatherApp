@@ -62,9 +62,6 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     }
     
-    
-    
-
     func refreshWeather() {
         guard let coordinate = currentLocation?.coordinate else {
             return
@@ -84,28 +81,6 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
         alertController.addAction(action)
         present(alertController, animated: true, completion: nil)
     }
-    
-
-//    
-//    func showAlertForCurrentLocationEnabling() {
-//        let alertController = UIAlertController (title: nil, message: "To see the weather on your current location go to settings and enable the location tracking.", preferredStyle: .alert)
-//        
-//        let settingsAction = UIAlertAction(title: "Go to settings", style: .default) { (_) -> Void in
-//            guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
-//                return
-//            }
-//            
-//            if UIApplication.shared.canOpenURL(settingsUrl) {
-//                UIApplication.shared.open(settingsUrl, options: [:], completionHandler: nil)
-//            }
-//        }
-//        alertController.addAction(settingsAction)
-//        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
-//        alertController.addAction(cancelAction)
-//        
-//        present(alertController, animated: true, completion: nil)
-//    }
-    
 
     // MARK: - Table view data source
 
@@ -197,15 +172,5 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
         guard let location = Location(city: city, country: country, coordinate: Coordinate(latitude: latitude, longitude: longitude)) else { return nil }
         
         return location
-    }
-    
-    func changeLocation(_ location: Location, atIndex index: Int) {
-        currentLocation = location
-        pagerIndex = index
-        if !LocationService.isAuthorized {
-            let lastLocationDictionary = convertToDictionaryFrom(location)
-            defaults.set(lastLocationDictionary, forKey: lastLocationKey)
-        }
-        refreshWeather()
     }
 }

@@ -252,7 +252,7 @@
         <!--Change location-->
         <scene sceneID="rMT-7G-neQ">
             <objects>
-                <viewController storyboardIdentifier="Location" automaticallyAdjustsScrollViewInsets="NO" id="k85-NZ-YVr" customClass="LocationViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LocationViewController" automaticallyAdjustsScrollViewInsets="NO" id="k85-NZ-YVr" customClass="LocationViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="fBJ-L5-iQ0"/>
                         <viewControllerLayoutGuide type="bottom" id="Vqf-PK-08y"/>
@@ -376,11 +376,11 @@
         <!--Navigation Controller-->
         <scene sceneID="ncx-yQ-jST">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="rG5-4O-bhF" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationController" automaticallyAdjustsScrollViewInsets="NO" id="rG5-4O-bhF" sceneMemberID="viewController">
                     <toolbarItems/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="TTp-4R-2e0">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="TTp-4R-2e0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
