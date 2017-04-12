@@ -21,9 +21,6 @@ class WeatherPageViewController: UIPageViewController, UIPageViewControllerDataS
    
     
     override func viewWillDisappear(_ animated: Bool) {
-        if trackedLocation != nil && !locations.isEmpty {
-            locations.remove(at: 0)
-        }
         locationService.saveLocations(locations)
     }
     
@@ -33,16 +30,9 @@ class WeatherPageViewController: UIPageViewController, UIPageViewControllerDataS
         return storyboard.instantiateViewController(withIdentifier: "WeatherViewController") as! WeatherViewController
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
-        
+    override func viewWillAppear(_ animated: Bool) {
         locations = locationService.getSavedLocations()
-        
-        dataSource = self
-        delegate = self
+        weatherViewControllers = []
         
         for location in locations {
             let newViewController = createWeatherViewController()
@@ -53,7 +43,18 @@ class WeatherPageViewController: UIPageViewController, UIPageViewControllerDataS
         if let firstViewController = weatherViewControllers.first {
             setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
+        self.view.backgroundColor = UIColor(colorLiteralRed: 0/255.0, green: 140/255.0, blue: 255/255.0, alpha: 1.0)
+        
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
+        
+        dataSource = self
+        delegate = self
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -106,6 +107,17 @@ class WeatherPageViewController: UIPageViewController, UIPageViewControllerDataS
                 if let firstViewController = self.weatherViewControllers.first {
                     self.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
                 }
+            } else {
+                guard let newTrackedLocation = newLocation else {
+                    return
+                }
+                self.trackedLocation = newLocation
+                self.weatherViewControllers.first?.currentLocation = self.trackedLocation
+                self.locations[0] = newTrackedLocation
+                
+                if let firstViewController = self.weatherViewControllers.first {
+                    self.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
+                }
             }
         })
     }
@@ -140,6 +152,10 @@ extension WeatherPageViewController {
             return nil
         }
         
+        if weatherViewControllers.count < 2 {
+            return nil
+        }
+        
         let previousIndex = viewControllerIndex - 1
         
         guard previousIndex >= 0 else {
@@ -163,6 +179,9 @@ extension WeatherPageViewController {
         let nextIndex = viewControllerIndex + 1
         let weatherViewControllersCount = weatherViewControllers.count
         
+        if weatherViewControllersCount < 2 {
+            return nil
+        }
         
         guard weatherViewControllersCount != nextIndex else {
             return weatherViewControllers.first

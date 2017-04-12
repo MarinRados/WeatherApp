@@ -33,8 +33,6 @@ class LocationViewController: UIViewController, UITableViewDelegate, UITableView
     @IBAction func cancelModalView(_ sender: UIBarButtonItem) {
         if locations.isEmpty && !LocationService.isAuthorized {
             showAlertWith(message: "You have to enable current location tracking or add at least one location manually to use this app.")
-        } else if trackedLocation == nil {
-            showAlertWith(message: "Please select one of your added locations to see the weather.")
         } else {
             locationService.saveLocations(locations)
             dismiss(animated: true, completion: nil)
@@ -72,6 +70,17 @@ extension LocationViewController {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        let index = indexPath.row
+        
+        if index == 0 && LocationService.isAuthorized {
+            return 0.5
+        } else {
+            return 60
+        }
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         locationService.saveLocations(locations)
         dismiss(animated: true, completion: nil)
@@ -80,6 +89,7 @@ extension LocationViewController {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             locations.remove(at: indexPath.row)
+            locationService.saveLocations(locations)
             tableView.deleteRows(at: [indexPath], with: .none)
             locationTableView.reloadData()
         }
