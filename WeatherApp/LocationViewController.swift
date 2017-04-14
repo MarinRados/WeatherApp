@@ -19,6 +19,8 @@ class LocationViewController: UIViewController, UITableViewDelegate, UITableView
     let pageViewController = WeatherPageViewController()
     let locationService = LocationService()
     
+    var onSelectedIndex: ((Int)-> Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         locationTableView.delegate = self
@@ -31,7 +33,7 @@ class LocationViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @IBAction func cancelModalView(_ sender: UIBarButtonItem) {
-        if locations.isEmpty && !LocationService.isAuthorized {
+        if locations.isEmpty && !locationService.isAuthorized {
             showAlertWith(message: "You have to enable current location tracking or add at least one location manually to use this app.")
         } else {
             locationService.saveLocations(locations)
@@ -74,7 +76,7 @@ extension LocationViewController {
         
         let index = indexPath.row
         
-        if index == 0 && LocationService.isAuthorized {
+        if index == 0 && locationService.isAuthorized {
             return 0.5
         } else {
             return 60
@@ -83,6 +85,7 @@ extension LocationViewController {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         locationService.saveLocations(locations)
+        onSelectedIndex?(indexPath.row)
         dismiss(animated: true, completion: nil)
     }
     
@@ -98,7 +101,7 @@ extension LocationViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "Map" {
             let destinationViewController = segue.destination as! MapViewController
-            destinationViewController.currentLocation = trackedLocation
+            destinationViewController.currentLocation = currentLocation
         }
     }
 }

@@ -11,14 +11,16 @@ import CoreLocation
 
 class WeatherPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, CLLocationManagerDelegate {
     
+    let locationService = LocationService()
+    
     var locations: [Location] = []
     let defaults = UserDefaults.standard
     let locationsKey = "locations"
     var weatherViewControllers: [WeatherViewController] = []
     let locationManager = CLLocationManager()
     var trackedLocation: Location?
-    let locationService = LocationService()
-   
+    
+    var currentIndex: Int = 0
     
     override func viewWillDisappear(_ animated: Bool) {
         locationService.saveLocations(locations)
@@ -31,32 +33,48 @@ class WeatherPageViewController: UIPageViewController, UIPageViewControllerDataS
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if LocationService.isAuthorized {
+        if locationService.isAuthorized {
             locationManager.startUpdatingLocation()
         }
         
         locations = locationService.getSavedLocations()
-        weatherViewControllers = []
         
-        var index = 0
-        
-        for location in locations {
+        weatherViewControllers = locations.enumerated().map { (index, location) in
             let newViewController = createWeatherViewController()
             newViewController.currentLocation = location
+            newViewController.pagerCount = locations.count
             newViewController.pagerIndex = index
+            
+            newViewController.onShowLocationPicker = { [weak self] in
+                self?.showLocationPicker()
+            }
+            
             weatherViewControllers.append(newViewController)
-            index = index + 1
+            return newViewController
         }
         
-        if let firstViewController = weatherViewControllers.first {
-            setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
+        if currentIndex > weatherViewControllers.count - 1 {
+            currentIndex = weatherViewControllers.count - 1
         }
+        
+        
+        if !weatherViewControllers.isEmpty {
+            
+            let viewControllerToSet = weatherViewControllers[currentIndex]
+            
+            setViewControllers([viewControllerToSet], direction: .forward, animated: true) { _ in
+                DispatchQueue.main.async {
+                    self.setViewControllers([viewControllerToSet], direction: .forward, animated: false, completion: nil)
+                }
+            }
+        }
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor(colorLiteralRed: 0/255.0, green: 140/255.0, blue: 255/255.0, alpha: 1.0)
+        self.view.backgroundColor = UIColor(colorLiteralRed: 0/255.0, green: 128/255.0, blue: 255/255.0, alpha: 1.0)
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
@@ -68,13 +86,10 @@ class WeatherPageViewController: UIPageViewController, UIPageViewControllerDataS
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .notDetermined:
-            LocationService.isAuthorized = false
             locationManager.requestWhenInUseAuthorization()
         case .authorizedWhenInUse:
-            LocationService.isAuthorized = true
             locationManager.startUpdatingLocation()
         case .denied:
-            LocationService.isAuthorized = false
             if locations.isEmpty {
                 showAlertForDeniedAuthorization()
             } else {
@@ -184,6 +199,22 @@ class WeatherPageViewController: UIPageViewController, UIPageViewControllerDataS
         alertController.addAction(cancelAction)
         
         present(alertController, animated: true, completion: nil)
+    }
+    
+    private func showLocationPicker() {
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let pickLocationNavigation = storyboard.instantiateViewController(withIdentifier: "PickLocation") as! UINavigationController
+        let pickLocation = pickLocationNavigation.viewControllers.first as! LocationViewController
+        
+        pickLocation.onSelectedIndex = { [weak self] index in
+            self?.currentIndex = index
+            pickLocation.dismiss(animated: true, completion: nil)
+        }
+        
+        pickLocation.currentLocation = locations.first
+        
+        present(pickLocationNavigation, animated: true)
     }
 }
 

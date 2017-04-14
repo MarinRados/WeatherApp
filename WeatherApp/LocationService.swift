@@ -10,9 +10,23 @@ import Foundation
 import CoreLocation
 
 class LocationService: NSObject, CLLocationManagerDelegate {
-    static var isAuthorized: Bool = false
+    
+    var isAuthorized: Bool {
+        
+        let status = CLLocationManager.authorizationStatus()
+        switch status {
+        case .authorizedAlways:
+            fallthrough
+        case .authorizedWhenInUse:
+            return true
+        default:
+            return false
+        }
+    }
+    
     let locationsKey = "locations"
     let defaults = UserDefaults.standard
+    
     
     func getSavedLocations() -> [Location] {
         if let newLocations = defaults.object(forKey: locationsKey) {

@@ -18,22 +18,33 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     var forecastData: [SevenDayForecastPresentable]? = nil
     var currentLocation: Location?
     var trackedLocation: Location?
-    var allLocations = [Location]()
+    var pagerCount: Int? {
+        didSet {
+            tableView?.reloadData()
+        }
+    }
     let defaults = UserDefaults.standard
     let locationService = LocationService()
     let lastLocationKey = "lastLocation"
     let locationsKey = "locations"
-    var pagerIndex: Int?
-    let refreshControl = UIRefreshControl()
+    var pagerIndex: Int? {
+        didSet {
+            tableView?.reloadData()
+        }
+    }
     
-    override func viewWillAppear(_ animated: Bool) {
-        allLocations = locationService.getSavedLocations()
+    var onShowLocationPicker: (()-> Void)?
+    
+    @IBAction func editLocationButtonTapped(_ sender: UIButton) {
+        onShowLocationPicker?()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //tableView.refreshControl = refreshControl
+        let refreshControl = UIRefreshControl()
+        
+        refreshControl.addTarget(self, action: #selector(self.refreshWeather), for: UIControlEvents.valueChanged)
         
         setViewModel()
         
@@ -42,13 +53,13 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
         viewModel.onSuccess = { [weak self] data in
             self?.currentData = data
             self?.tableView.reloadData()
-            //self?.tableView.refreshControl?.endRefreshing()
+            self?.tableView.refreshControl?.endRefreshing()
         }
         
         viewModel.onForecastSuccess = { [weak self] data in
             self?.forecastData = data
             self?.tableView.reloadData()
-            //self?.tableView.refreshControl?.endRefreshing()
+            self?.tableView.refreshControl?.endRefreshing()
         }
         
         viewModel.onError = { [weak self] error in
@@ -60,11 +71,10 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
             case .jsonConversionFailure: self?.showAlertWith(message: "JSON conversion failed.")
             case .jsonParsingFailure: self?.showAlertWith(message: "JSON parsing failed.")
             }
-            //self?.tableView.refreshControl?.endRefreshing()
+            self?.tableView.refreshControl?.endRefreshing()
         }
         
-        //self.tableView.refreshControl?.addTarget(self, action: #selector(WeatherViewController.refreshWeather), for: UIControlEvents.valueChanged)
-
+        tableView.refreshControl = refreshControl
     }
     
     func refreshWeather() {
@@ -73,7 +83,6 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         viewModel.getWeather(coordinates: coordinate)
         viewModel.getForecast(coordinates: coordinate)
-        //tableView.reloadData()
     }
     
     private func setViewModel(){
@@ -123,7 +132,7 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
         headerCell.locationLabel.text = "\(currentLocation.city), \(currentLocation.country)"
         headerCell.weatherImage.image = currentData?.icon
         headerCell.summaryLabel.text = currentData?.summary
-        headerCell.pageControl.numberOfPages = allLocations.count
+        headerCell.pageControl.numberOfPages = pagerCount ?? 0
         if let index = pagerIndex {
             headerCell.pageControl.currentPage = index
         }
@@ -156,7 +165,7 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 140
     }
-    
+
     func convertToDictionaryFrom(_ location: Location) -> [String: Any] {
         let dictionary: [String: Any] = [
             "city": location.city,

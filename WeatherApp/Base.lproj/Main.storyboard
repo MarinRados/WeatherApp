@@ -82,7 +82,7 @@
                                                     </constraints>
                                                     <state key="normal" image="edit"/>
                                                     <connections>
-                                                        <segue destination="rG5-4O-bhF" kind="presentation" identifier="Location" id="7bh-Cz-OBX"/>
+                                                        <action selector="editLocationButtonTapped:" destination="3dq-Yt-Vj1" eventType="touchUpInside" id="ytC-We-KZN"/>
                                                     </connections>
                                                 </button>
                                                 <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="jZp-z2-rcb">
@@ -328,7 +328,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nl4-b9-f9c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2903.1999999999998" y="87.706146926536732"/>
+            <point key="canvasLocation" x="2830" y="-612"/>
         </scene>
         <!--Map View Controller-->
         <scene sceneID="1gr-Bs-DA5">
@@ -371,12 +371,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bk2-qu-VLM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3837.5999999999999" y="87.706146926536732"/>
+            <point key="canvasLocation" x="3764" y="-612"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ncx-yQ-jST">
             <objects>
-                <navigationController storyboardIdentifier="NavigationController" automaticallyAdjustsScrollViewInsets="NO" id="rG5-4O-bhF" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="PickLocation" automaticallyAdjustsScrollViewInsets="NO" id="rG5-4O-bhF" sceneMemberID="viewController">
                     <toolbarItems/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
@@ -395,7 +395,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BwK-yf-4yR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1964" y="87.706146926536732"/>
+            <point key="canvasLocation" x="1993" y="-612"/>
         </scene>
     </scenes>
     <resources>
